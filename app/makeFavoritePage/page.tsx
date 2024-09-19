@@ -9,11 +9,12 @@ import icon3 from '../images/Media.png'; // メディアアイコン
 import icon4 from '../images/shape.png'; // 形状アイコン
 import icon5 from '../images/music.png'; // 音楽アイコン
 import icon6 from '../images/link.png'; // リンクアイコン
-import icon7 from '../images/Write.png'; // ペンアイコン
+import ReplyIcon from '@mui/icons-material/Reply';
 import icon8 from '../images/color.png'; // 色アイコン
 import right from '../images/rightSort.png'; // 右矢印アイコン
 import left from '../images/leftSort.png'; // 左矢印アイコン
 import center from '../images/centerSort.png'; // 中央矢印アイコン
+
 
 const styles = {
     container: {
@@ -39,7 +40,7 @@ const styles = {
         transition: 'bottom 0.3s ease',
         zIndex: 13,
     }),
-    tabContainer: {
+    tabContainer: (isOpen) => ({
         position: 'absolute',
         width: "80%",
         bottom: '30px',
@@ -52,7 +53,9 @@ const styles = {
         display: 'grid',
         gridTemplateColumns: 'repeat(4, 1fr)',
         gap: '20px',
-    },
+        opacity: isOpen ? 1 : 0, // 透明度を変更
+        transition: 'opacity 0.3s ease', // トランジションを追加
+    }),
     iconContainer: {
         display: 'flex',
         flexDirection: 'column',
@@ -90,8 +93,8 @@ const styles = {
     },
     alignmentButton: (isActive) => ({
         border: 'none',
-        background: isActive ? '#969696' : 'transparent', // 選択時の背景色
-        color: isActive ? '#fff' : 'black', // 選択時のテキスト色
+        background: isActive ? '#969696' : 'transparent',
+        color: isActive ? '#fff' : 'black',
         cursor: 'pointer',
     }),
 };
@@ -109,7 +112,11 @@ const MakeFavoritePage = () => {
     };
 
     const handleIconClick = (label) => {
-        setActiveModal(label);
+        if (label === 'ペン') {
+            setInsertedText(insertedText.slice(0, -1));
+        } else {
+            setActiveModal(label);
+        }
     };
 
     const closeModal = () => {
@@ -123,20 +130,18 @@ const MakeFavoritePage = () => {
             alignment: alignment,
         };
         setInsertedText([...insertedText, tempTextData]);
-        setText(''); // テキスト入力をリセット
-        setFontSize(16); // フォントサイズをリセット
-        setAlignment('left'); // アラインメントをリセット
+        setText('');
+        setFontSize(16);
+        setAlignment('left');
     };
 
     return (
         <div style={styles.container}>
-            {
-                insertedText.map((textData, index) => (
-                    <div key={index} style={{ fontSize: `${textData.fontSize}px`, textAlign: textData.alignment }}>
-                        {textData.text}
-                    </div>
-                ))
-            }
+            {insertedText.map((textData, index) => (
+                <div key={index} style={{ fontSize: `${textData.fontSize}px`, textAlign: textData.alignment }}>
+                    {textData.text}
+                </div>
+            ))}
             <button
                 onClick={handleToggle}
                 style={styles.button(isOpen)}
@@ -145,7 +150,7 @@ const MakeFavoritePage = () => {
             </button>
 
             {isOpen && (
-                <div style={styles.tabContainer}>
+                <div style={styles.tabContainer(isOpen)}>
                     {[ 
                         { src: icon1, label: 'テキスト' },
                         { src: icon2, label: 'カレンダー' },
@@ -153,11 +158,11 @@ const MakeFavoritePage = () => {
                         { src: icon4, label: '形状' },
                         { src: icon5, label: '音楽' },
                         { src: icon6, label: 'リンク' },
-                        { src: icon7, label: 'ペン' },
+                        { label: '元に戻す', icon: <ReplyIcon /> },
                         { src: icon8, label: '' },
                     ].map((icon, index) => (
                         <div key={index} style={styles.iconContainer} onClick={() => handleIconClick(icon.label)}>
-                            <Image src={icon.src} alt={`icon${index + 1}`} width={30} height={30} />
+                            {icon.icon ? icon.icon : <Image src={icon.src} alt={`icon${index + 1}`} width={30} height={30} />}
                             <span style={styles.label}>{icon.label}</span>
                         </div>
                     ))}
@@ -182,7 +187,7 @@ const MakeFavoritePage = () => {
                         value={fontSize}
                         onChange={(e) => setFontSize(e.target.value)}
                     />
-                    <div style={{ display: 'flex', gap: '10px', border: '1px solid #ccc', padding: '5px', borderRadius: '5px', justifyContent:"space-between" }}>
+                    <div style={{ display: 'flex', gap: '10px', border: '1px solid #ccc', padding: '5px', borderRadius: '5px', justifyContent: "space-between" }}>
                         <button onClick={() => setAlignment('left')} style={styles.alignmentButton(alignment === 'left')}>
                             <Image src={left} alt={"leftSort"} width={30} height={30} />
                         </button>
@@ -193,18 +198,19 @@ const MakeFavoritePage = () => {
                             <Image src={right} alt={"rightSort"} width={30} height={30} />
                         </button>
                     </div>
-                    <button onClick={closeModal}>閉じる</button>
-                    <button onClick={handleText}>完了</button>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
+                        <button onClick={closeModal} style={{ marginRight: 'auto' }}>閉じる</button>
+                        <button onClick={handleText} style={{ marginLeft: 'auto' }}>決定</button>
+                    </div>
                 </div>
             )}
-            {activeModal === 'カレンダー' && (
+
+            {activeModal === 'メディア' && (
                 <div style={styles.modal}>
                     <h3>カレンダー機能</h3>
-                    {/* カレンダーの処理をここに追加 */}
                     <button onClick={closeModal}>閉じる</button>
                 </div>
             )}
-            {/* 他のアイコンのモーダルも同様に追加できます */}
         </div>
     );
 };
