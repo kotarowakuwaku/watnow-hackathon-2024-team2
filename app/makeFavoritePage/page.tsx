@@ -11,6 +11,9 @@ import icon5 from '../images/music.png'; // 音楽アイコン
 import icon6 from '../images/link.png'; // リンクアイコン
 import icon7 from '../images/Write.png'; // ペンアイコン
 import icon8 from '../images/color.png'; // 色アイコン
+import right from '../images/rightSort.png'; // 右矢印アイコン
+import left from '../images/leftSort.png'; // 左矢印アイコン
+import center from '../images/centerSort.png'; // 中央矢印アイコン
 
 const styles = {
     container: {
@@ -85,6 +88,12 @@ const styles = {
         padding: '10px',
         border: '1px solid #ccc',
     },
+    alignmentButton: (isActive) => ({
+        border: 'none',
+        background: isActive ? '#969696' : 'transparent', // 選択時の背景色
+        color: isActive ? '#fff' : 'black', // 選択時のテキスト色
+        cursor: 'pointer',
+    }),
 };
 
 const MakeFavoritePage = () => {
@@ -93,11 +102,7 @@ const MakeFavoritePage = () => {
     const [fontSize, setFontSize] = useState(16);
     const [alignment, setAlignment] = useState('left');
     const [activeModal, setActiveModal] = useState(null);
-    const [insertedText, setInsertedText] = useState({
-        text: '',
-        fontSize: 16,
-        alignment: 'left',
-    });
+    const [insertedText, setInsertedText] = useState([]);
 
     const handleToggle = () => {
         setIsOpen(!isOpen);
@@ -108,14 +113,30 @@ const MakeFavoritePage = () => {
     };
 
     const closeModal = () => {
-        if (activeModal === 'テキスト') {
-            setInsertedText({ text, fontSize, alignment }); // 入力された情報を保存
-        }
         setActiveModal(null);
+    };
+
+    const handleText = () => {
+        const tempTextData = {
+            text: text,
+            fontSize: fontSize,
+            alignment: alignment,
+        };
+        setInsertedText([...insertedText, tempTextData]);
+        setText(''); // テキスト入力をリセット
+        setFontSize(16); // フォントサイズをリセット
+        setAlignment('left'); // アラインメントをリセット
     };
 
     return (
         <div style={styles.container}>
+            {
+                insertedText.map((textData, index) => (
+                    <div key={index} style={{ fontSize: `${textData.fontSize}px`, textAlign: textData.alignment }}>
+                        {textData.text}
+                    </div>
+                ))
+            }
             <button
                 onClick={handleToggle}
                 style={styles.button(isOpen)}
@@ -125,7 +146,7 @@ const MakeFavoritePage = () => {
 
             {isOpen && (
                 <div style={styles.tabContainer}>
-                    {[
+                    {[ 
                         { src: icon1, label: 'テキスト' },
                         { src: icon2, label: 'カレンダー' },
                         { src: icon3, label: 'メディア' },
@@ -133,7 +154,7 @@ const MakeFavoritePage = () => {
                         { src: icon5, label: '音楽' },
                         { src: icon6, label: 'リンク' },
                         { src: icon7, label: 'ペン' },
-                        { src: icon8, label: '色' },
+                        { src: icon8, label: '' },
                     ].map((icon, index) => (
                         <div key={index} style={styles.iconContainer} onClick={() => handleIconClick(icon.label)}>
                             <Image src={icon.src} alt={`icon${index + 1}`} width={30} height={30} />
@@ -161,16 +182,19 @@ const MakeFavoritePage = () => {
                         value={fontSize}
                         onChange={(e) => setFontSize(e.target.value)}
                     />
-                    <div>
-                        <button onClick={() => setAlignment('left')}>左寄せ</button>
-                        <button onClick={() => setAlignment('center')}>中央寄せ</button>
-                        <button onClick={() => setAlignment('right')}>右寄せ</button>
-                    </div>
-                    <div style={{ ...styles.preview, textAlign: alignment, fontSize: `${fontSize}px`, marginTop: '10px' }}>
-                        プレビュー: {text}
+                    <div style={{ display: 'flex', gap: '10px', border: '1px solid #ccc', padding: '5px', borderRadius: '5px', justifyContent:"space-between" }}>
+                        <button onClick={() => setAlignment('left')} style={styles.alignmentButton(alignment === 'left')}>
+                            <Image src={left} alt={"leftSort"} width={30} height={30} />
+                        </button>
+                        <button onClick={() => setAlignment('center')} style={styles.alignmentButton(alignment === 'center')}>
+                            <Image src={center} alt={"centerSort"} width={30} height={30} />
+                        </button>
+                        <button onClick={() => setAlignment('right')} style={styles.alignmentButton(alignment === 'right')}>
+                            <Image src={right} alt={"rightSort"} width={30} height={30} />
+                        </button>
                     </div>
                     <button onClick={closeModal}>閉じる</button>
-                    <button onClick={handleText}></button>
+                    <button onClick={handleText}>完了</button>
                 </div>
             )}
             {activeModal === 'カレンダー' && (
