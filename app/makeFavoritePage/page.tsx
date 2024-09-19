@@ -15,7 +15,6 @@ import right from '../images/rightSort.png'; // 右矢印アイコン
 import left from '../images/leftSort.png'; // 左矢印アイコン
 import center from '../images/centerSort.png'; // 中央矢印アイコン
 
-
 const styles = {
     container: {
         position: 'relative',
@@ -53,8 +52,8 @@ const styles = {
         display: 'grid',
         gridTemplateColumns: 'repeat(4, 1fr)',
         gap: '20px',
-        opacity: isOpen ? 1 : 0, // 透明度を変更
-        transition: 'opacity 0.3s ease', // トランジションを追加
+        opacity: isOpen ? 1 : 0,
+        transition: 'opacity 0.3s ease',
     }),
     iconContainer: {
         display: 'flex',
@@ -76,6 +75,7 @@ const styles = {
         boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
         padding: '20px',
         zIndex: 20,
+        width: '300px',
     },
     input: {
         width: '100%',
@@ -88,8 +88,9 @@ const styles = {
     },
     preview: {
         marginTop: '20px',
-        padding: '10px',
         border: '1px solid #ccc',
+        borderRadius: '5px',
+        overflow: 'hidden',
     },
     alignmentButton: (isActive) => ({
         border: 'none',
@@ -105,15 +106,17 @@ const MakeFavoritePage = () => {
     const [fontSize, setFontSize] = useState(16);
     const [alignment, setAlignment] = useState('left');
     const [activeModal, setActiveModal] = useState(null);
-    const [insertedText, setInsertedText] = useState([]);
+    const [insertedItems, setInsertedItems] = useState([]);
+    const [uploadedImage, setUploadedImage] = useState(null);
+    const [imageSize, setImageSize] = useState(100);
 
     const handleToggle = () => {
         setIsOpen(!isOpen);
     };
 
     const handleIconClick = (label) => {
-        if (label === 'ペン') {
-            setInsertedText(insertedText.slice(0, -1));
+        if (label === '元に戻す') {
+            setInsertedItems(insertedItems.slice(0, -1));
         } else {
             setActiveModal(label);
         }
@@ -121,6 +124,7 @@ const MakeFavoritePage = () => {
 
     const closeModal = () => {
         setActiveModal(null);
+        setUploadedImage(null);
     };
 
     const handleText = () => {
@@ -129,29 +133,48 @@ const MakeFavoritePage = () => {
             fontSize: fontSize,
             alignment: alignment,
         };
-        setInsertedText([...insertedText, tempTextData]);
+        setInsertedItems([...insertedItems, tempTextData]);
         setText('');
         setFontSize(16);
         setAlignment('left');
     };
 
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setUploadedImage(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleComplete = () => {
+        if (uploadedImage) {
+            const tempImageData = {
+                src: uploadedImage,
+                size: imageSize,
+            };
+            setInsertedItems([...insertedItems, tempImageData]);
+        }
+        closeModal();
+    };
+
     return (
         <div style={styles.container}>
-            {insertedText.map((textData, index) => (
-                <div key={index} style={{ fontSize: `${textData.fontSize}px`, textAlign: textData.alignment }}>
-                    {textData.text}
+            {insertedItems.map((item, index) => (
+                <div key={index} style={{ textAlign: item.alignment, fontSize: item.fontSize ? `${item.fontSize}px` : undefined }}>
+                    {item.text ? item.text : <img src={item.src} alt={`uploaded-${index}`} style={{ width: `${item.size}%`, height: 'auto' }} />}
                 </div>
             ))}
-            <button
-                onClick={handleToggle}
-                style={styles.button(isOpen)}
-            >
+            <button onClick={handleToggle} style={styles.button(isOpen)}>
                 <Image src={penIcon} alt="pen" />
             </button>
 
             {isOpen && (
                 <div style={styles.tabContainer(isOpen)}>
-                    {[ 
+                    {[
                         { src: icon1, label: 'テキスト' },
                         { src: icon2, label: 'カレンダー' },
                         { src: icon3, label: 'メディア' },
@@ -169,7 +192,7 @@ const MakeFavoritePage = () => {
                 </div>
             )}
 
-            {/* モーダル */}
+            {/* テキストモーダル */}
             {activeModal === 'テキスト' && (
                 <div style={styles.modal}>
                     <input
@@ -183,19 +206,19 @@ const MakeFavoritePage = () => {
                         type="range"
                         style={styles.slider}
                         min="10"
-                        max="50"
+                        max="40"
                         value={fontSize}
                         onChange={(e) => setFontSize(e.target.value)}
                     />
                     <div style={{ display: 'flex', gap: '10px', border: '1px solid #ccc', padding: '5px', borderRadius: '5px', justifyContent: "space-between" }}>
                         <button onClick={() => setAlignment('left')} style={styles.alignmentButton(alignment === 'left')}>
-                            <Image src={left} alt={"leftSort"} width={30} height={30} />
+                            <Image src={left} alt={"左揃え"} width={30} height={30} />
                         </button>
                         <button onClick={() => setAlignment('center')} style={styles.alignmentButton(alignment === 'center')}>
-                            <Image src={center} alt={"centerSort"} width={30} height={30} />
+                            <Image src={center} alt={"中央揃え"} width={30} height={30} />
                         </button>
                         <button onClick={() => setAlignment('right')} style={styles.alignmentButton(alignment === 'right')}>
-                            <Image src={right} alt={"rightSort"} width={30} height={30} />
+                            <Image src={right} alt={"右揃え"} width={30} height={30} />
                         </button>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
@@ -205,10 +228,40 @@ const MakeFavoritePage = () => {
                 </div>
             )}
 
+            {/* メディアモーダル */}
             {activeModal === 'メディア' && (
                 <div style={styles.modal}>
-                    <h3>カレンダー機能</h3>
-                    <button onClick={closeModal}>閉じる</button>
+                    <h3>画像のアップロード</h3>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        style={styles.input}
+                    />
+                    {uploadedImage && (
+                        <div style={styles.preview}>
+                            <img
+                                src={uploadedImage}
+                                alt="プレビュー"
+                                style={{
+                                    width: `${imageSize}%`,
+                                    height: 'auto',
+                                }}
+                            />
+                            <input
+                                type="range"
+                                min="50"
+                                max="200"
+                                value={imageSize}
+                                onChange={(e) => setImageSize(e.target.value)}
+                                style={styles.slider}
+                            />
+                        </div>
+                    )}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
+                        <button onClick={closeModal} style={{ marginRight: 'auto' }}>閉じる</button>
+                        <button onClick={handleComplete} style={{ marginLeft: 'auto' }}>完了</button>
+                    </div>
                 </div>
             )}
         </div>
