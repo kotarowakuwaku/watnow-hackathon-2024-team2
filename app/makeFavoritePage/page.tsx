@@ -54,7 +54,7 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        cursor: 'pointer', // アイコンにカーソルをポインターにする
+        cursor: 'pointer',
     },
     label: {
         marginTop: '8px',
@@ -92,18 +92,26 @@ const MakeFavoritePage = () => {
     const [text, setText] = useState('');
     const [fontSize, setFontSize] = useState(16);
     const [alignment, setAlignment] = useState('left');
-    const [activeModal, setActiveModal] = useState(null); // アクティブなモーダルを追跡
+    const [activeModal, setActiveModal] = useState(null);
+    const [insertedText, setInsertedText] = useState({
+        text: '',
+        fontSize: 16,
+        alignment: 'left',
+    });
 
     const handleToggle = () => {
         setIsOpen(!isOpen);
     };
 
     const handleIconClick = (label) => {
-        setActiveModal(label); // クリックしたアイコンのラベルを保存
+        setActiveModal(label);
     };
 
     const closeModal = () => {
-        setActiveModal(null); // モーダルを閉じる
+        if (activeModal === 'テキスト') {
+            setInsertedText({ text, fontSize, alignment }); // 入力された情報を保存
+        }
+        setActiveModal(null);
     };
 
     return (
@@ -140,7 +148,7 @@ const MakeFavoritePage = () => {
                 <div style={styles.modal}>
                     <input
                         type="text"
-                        style={{ ...styles.input, fontSize: `${fontSize}px` }} // フォントサイズを入力欄にも適用
+                        style={{ ...styles.input, fontSize: `${fontSize}px` }}
                         value={text}
                         onChange={(e) => setText(e.target.value)}
                         placeholder="テキストを入力"
@@ -158,7 +166,11 @@ const MakeFavoritePage = () => {
                         <button onClick={() => setAlignment('center')}>中央寄せ</button>
                         <button onClick={() => setAlignment('right')}>右寄せ</button>
                     </div>
+                    <div style={{ ...styles.preview, textAlign: alignment, fontSize: `${fontSize}px`, marginTop: '10px' }}>
+                        プレビュー: {text}
+                    </div>
                     <button onClick={closeModal}>閉じる</button>
+                    <button onClick={handleText}></button>
                 </div>
             )}
             {activeModal === 'カレンダー' && (
