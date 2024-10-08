@@ -27,7 +27,7 @@ export default function Home() {
         <p style={{ fontFamily: "JPFont", fontSize: "16 px", color: "#333" }}>
           好きな情報をまとめて管理
         </p>
-        <Image src={title} alt="title" width={255} height={255} />
+        {/* <Image src={title} alt="title" width={255} height={255} /> */}
         <div
           style={{
             display: "flex",
