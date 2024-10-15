@@ -99,7 +99,7 @@ export default function SelectGenle() {
     };
 
     const registerGenles = async (data: { email: string; tags: string[] }) => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/select-genres`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/genre/select-genres`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

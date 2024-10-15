@@ -32,7 +32,7 @@ const Home = () => {
     }
   ) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get-user-oshi-genres`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/oshi/get-user-oshi-genres`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

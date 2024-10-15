@@ -38,7 +38,7 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
         }
     ) => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get-oshi-info`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/oshi/get-oshi-info`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

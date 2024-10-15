@@ -23,7 +23,7 @@ const SelectFavorite = () => {
         const newTimeout = setTimeout(async () => {
             if (value) {
                 try {
-                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/search-oshi`, {
+                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/oshi/search-oshi`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ const SelectFavorite = () => {
         }
     ) => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get-user-genres`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/genre/get-user-genres`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

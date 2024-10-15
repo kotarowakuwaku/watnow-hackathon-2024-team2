@@ -99,7 +99,7 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
         }
     ) => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/fetch-oshi-info`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/oshi/fetch-oshi-info`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -129,7 +129,7 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
             genre: string;
         }
     ) => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/save-oshi-info-and-genres`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/oshi/save-oshi-info-and-genres`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -155,7 +155,7 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
         }
     ) => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get-user-genres`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/genre/get-user-genres`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -168,6 +168,7 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
             if (response.ok) {
                 const responseData = await response.json();
                 setGenles(responseData);
+                console.log(responseData);
                 setSubmitted(true);
             } else {
                 console.error('Failed to fetch genres');
