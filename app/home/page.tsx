@@ -11,7 +11,7 @@ import { styled } from "@mui/material/styles";
 
 import styles from "./page.module.css"; // CSSモジュールのインポート
 
-import add from "../images/追加するぼたん.png";
+import add from "../images/button.png";
 import Image from "next/image";
 
 const Home = () => {
