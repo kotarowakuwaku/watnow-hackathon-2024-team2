@@ -107,7 +107,7 @@ const NewRegistration = () => {
     const registerUser = async (data:
         { name: string; email: string; password: string }
     ) => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
