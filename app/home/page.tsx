@@ -2,10 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
+import ReactLoading from "react-loading";
+
 import Link from "next/link";
 import Toggle from "../components/Toggle";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
+
+import styles from "./page.module.css"; // CSSモジュールのインポート
 
 import add from "../images/追加するぼたん.png";
 import Image from "next/image";
@@ -85,18 +89,24 @@ const Home = () => {
       {loading ? (
         <div
           style={{
+            backgroundColor: "#F6F6F6",
             display: "flex",
-            fontSize: "2rem",
-            textAlign: "center",
-            margin: "20px 0",
-            height: "100vh",
-            alignItems: "center",
+            flexDirection: "column",
             justifyContent: "center",
+            alignItems: "center",
+            height: "800px",
           }}
         >
-          Loading...
+          <div className={styles.loadingDonut}></div>{" "}
+          {/* モジュールからクラスを使用 */}
+          <p style={{ marginTop: "20px", fontFamily: "JPfont" }}>
+            Loading... Please wait...
+          </p>
         </div>
       ) : (
+        // 他の内容
+        // 他の内容
+
         <>
           <Header />
           <div style={{ display: "flex", justifyContent: "center" }}>
@@ -110,7 +120,7 @@ const Home = () => {
               display: "flex",
               justifyContent: "flex-end",
               paddingRight: "20px",
-              backgroundColor: "#EBF2F1",
+              backgroundColor: "#f6f6f6",
             }}
           >
             <svg
@@ -128,7 +138,7 @@ const Home = () => {
           </Typography>
           <div
             style={{
-              backgroundColor: "#EBF2F1",
+              backgroundColor: "#F6F6F6",
               height: "calc(100vh - 100px)",
               overflowY: "auto",
               display: "flex",
@@ -197,7 +207,7 @@ const Home = () => {
                 ))}
               </div>
             ))}
-          {/* </div>
+            {/* </div>
           <div
             style={{
               display: "flex",
@@ -231,7 +241,16 @@ const Home = () => {
             >
               +
             </button> */}
-            <Image src={add} alt="add" style={{ width: "90%", height: "120px", alignSelf:"flex-end", marginBottom:"30px"}} />
+            <Image
+              src={add}
+              alt="add"
+              style={{
+                width: "90%",
+                height: "120px",
+                alignSelf: "flex-end",
+                marginBottom: "30px",
+              }}
+            />
           </div>
         </>
       )}

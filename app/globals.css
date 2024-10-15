@@ -19,6 +19,7 @@
   src: url('./fonts/ShipporiGothicB2-Bold.ttf') format('woff');
   font-weight: normal;
   font-style: normal;
+  color: "#5D4C72";
 }
 
 body {

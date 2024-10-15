@@ -24,7 +24,7 @@ export default function Header() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#EBF2F1",
+        backgroundColor: "#f6f6f6",
       }}
     >
       {" "}

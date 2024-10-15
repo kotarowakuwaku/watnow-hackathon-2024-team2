@@ -39,6 +39,7 @@ export default function Header() {
               fontWeight: "bold",
               marginLeft: "10px",
               marginBottom: "10px",
+              color: "#5D4C72",
             }}
           >
             推し一覧
