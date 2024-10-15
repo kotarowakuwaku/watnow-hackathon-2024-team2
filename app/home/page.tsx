@@ -38,16 +38,13 @@ const Home = () => {
 
   const getFavorites = async (data: { email: string }) => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/get-user-oshi-genres`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email: data.email }),
-        }
-      );
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/oshi/get-user-oshi-genres`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: data.email }),
+      });
 
       if (response.ok) {
         const responseData = await response.json();
