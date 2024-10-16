@@ -85,6 +85,8 @@ const sample = [
     { id: 12, label: "ダンス/Dance", value: "ダンス" },
     { id: 13, label: "ゲーム/Video Games", value: "ゲーム" },
     { id: 14, label: "ファッション/Fashion", value: "ファッション" },
+    { id: 15, label: "スポーツ/Sports", value: "スポーツ" },
+    { id: 16, label: "その他", value: "その他" },
 ];
 
 export default function SelectGenle() {
