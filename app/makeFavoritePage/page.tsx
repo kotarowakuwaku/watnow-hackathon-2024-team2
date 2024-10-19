@@ -125,6 +125,7 @@ const MakeFavoritePage = () => {
         setText('');
         setFontSize(16);
         setAlignment('left');
+        closeModal();
     };
 
     const handleComplete = () => {
