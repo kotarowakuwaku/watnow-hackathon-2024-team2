@@ -94,7 +94,16 @@ const MakeFavoritePage = () => {
 
     const handleIconClick = (label) => {
         if (label === '元に戻す') {
-            setInsertedItems(insertedItems.slice(0, -1));
+            if(insertedItems[insertedItems.length - 1].type === 'event') {
+                if(events.length === 0){
+                    setInsertedItems(insertedItems.slice(0, -1));
+                }else{
+                    setEvents((prevEvents) => prevEvents.slice(0, -1));
+                }
+            }else{
+                setInsertedItems(insertedItems.slice(0, -1));
+            }
+            
         } else {
             setActiveModal(label);
         }
@@ -138,7 +147,7 @@ const MakeFavoritePage = () => {
             start: newEvent.start,
             end: newEvent.end,
         };
-        if (events.length === 0) {
+        if (insertedItems.some((item) => item.type !== 'event') || insertedItems.length === 0) {
             setEvents((prevEvents) => [...prevEvents, newEvent]);
             setInsertedItems([...insertedItems, eventData]); // eventsも挿入
         } else {
