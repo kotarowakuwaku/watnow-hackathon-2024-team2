@@ -2,12 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
-import ReactLoading from "react-loading";
+//import ReactLoading from "react-loading";
 
 import Link from "next/link";
 import Toggle from "../components/Toggle";
 import Typography from "@mui/material/Typography";
-import { styled } from "@mui/material/styles";
+//import { styled } from "@mui/material/styles";
 
 import styles from "./page.module.css"; // CSSモジュールのインポート
 

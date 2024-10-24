@@ -2,19 +2,20 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { Margin } from "@mui/icons-material";
+//import { Margin } from "@mui/icons-material";
 
 export default function Header() {
   const [view, setView] = React.useState("list"); // 初期状態を 'list' に設定
 
   const handleViewChange = (
-    event: any,
-    newView: React.SetStateAction<string> | null
+      event: React.MouseEvent<HTMLElement>,
+      newView: React.SetStateAction<string> | null
   ) => {
-    if (newView !== null) {
-      setView(newView); // 選択状態が変更された場合に状態を更新
-    }
+      if (newView !== null) {
+          setView(newView); // 選択状態が変更された場合に状態を更新
+      }
   };
+
 
   return (
     <div
