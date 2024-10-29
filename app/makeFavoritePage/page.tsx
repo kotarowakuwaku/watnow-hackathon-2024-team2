@@ -172,7 +172,15 @@ const MakeFavoritePage = () => {
                     );
                 } else if (item.type === 'event') {
                     return (
-                        <div key={index}>
+                        <div key={index} style={{
+                            width: '90%',
+                            height: 'auto',
+                            margin: 'auto',
+                            border: '1px solid #ccc',
+                            borderRadius: '5px',
+                            padding: '10px',
+                            marginBottom: '10px',
+                        }}>
                             <FullCalendar
                                 plugins={[dayGridPlugin, timeGridPlugin]}
                                 initialView="dayGridMonth"
@@ -181,9 +189,10 @@ const MakeFavoritePage = () => {
                                 headerToolbar={{
                                     left: 'prev,next today',
                                     center: 'title',
-                                    right: 'dayGridMonth,timeGridWeek',
+                                    right: '',
                                 }}
                                 events={events} // Pass events to FullCalendar
+                                height='400px'
                             />
                         </div>
                     );
