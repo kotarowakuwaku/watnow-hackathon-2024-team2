@@ -1,8 +1,10 @@
 "use client";
 
-import title from "./images/title.png";
+import title from "./images/retitle.png";
 import Image from "next/image";
 import Btn from "./components/Button";
+import styles from "./page.module.css";
+import point from "./images/point.png";
 
 export default function Home() {
   const handleClick = () => {
@@ -22,16 +24,23 @@ export default function Home() {
           alignItems: "center",
           flexFlow: "column",
           height: "90%",
+          cursor: `url(${point}), auto`,
         }}
       >
-        <p style={{ fontFamily: "JPFont", fontSize: "16 px", color: "#333" }}>
-          好きな情報をまとめて管理
-        </p>
-        <Image src={title} alt="title" width={255} height={255} />
+        {/* Apply the CSS module class */}
+        <p className={styles.text}>好きな情報をまとめて管理</p>
+        <Image
+          className={styles.title}
+          src={title}
+          alt="title"
+        />
         <div
+          className={styles.button}
           style={{
+            marginTop: "50px",
             display: "flex",
             flexFlow: "column",
+            alignItems: "center"
           }}
         >
           <Btn
@@ -42,17 +51,26 @@ export default function Home() {
           <Btn type={"button"} text={"新規登録"} onClick={handleClick} />
         </div>
       </main>
-      <footer style={{display: 'flex', height: '10%', justifyContent: 'center',alignContent: 'center',}}>
+      <footer
+        style={{
+          display: "flex",
+          height: "10%",
+          justifyContent: "center",
+          alignContent: "center",
+        }}
+      >
         <div
           style={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             borderTop: "1px solid #ccc",
-            width: '255px',
+            width: "80%",
           }}
         >
-          <p style={{ color: "#717171", fontSize: '14px', }}>@watnowハッカソン</p>
+          <p style={{ color: "#717171", fontSize: "14px" }}>
+            @watnowハッカソン
+          </p>
         </div>
       </footer>
     </div>
