@@ -1,19 +1,21 @@
 'use client';
 
+import xIcon from "../../images/x.png"; // Ensure this path is correct
+import spotifyIcon from "../../images/spotify.png"; // Ensure this path is correct
 import Image from 'next/image';
-import React, { useState } from 'react';
-import penIcon from '../images/pen.png';
-import icon1 from '../images/T.png'; // テキストアイコン
-import icon2 from '../images/Today.png'; // カレンダーアイコン
-import icon3 from '../images/Media.png'; // メディアアイコン
-import icon4 from '../images/shape.png'; // 形状アイコン
-import icon5 from '../images/music.png'; // 音楽アイコン
-import icon6 from '../images/link.png'; // リンクアイコン
+import React, { useEffect, useState } from 'react';
+import penIcon from '../../images/pen.png';
+import icon1 from '../../images/T.png'; // テキストアイコン
+import icon2 from '../../images/Today.png'; // カレンダーアイコン
+import icon3 from '../../images/Media.png'; // メディアアイコン
+import icon4 from '../../images/shape.png'; // 形状アイコン
+import icon5 from '../../images/music.png'; // 音楽アイコン
+import icon6 from '../../images/link.png'; // リンクアイコン
 import ReplyIcon from '@mui/icons-material/Reply';
-import icon8 from '../images/color.png'; // 色アイコン
-import TextModal from '../components/TextModal';
-import MediaModal from '../components/MediaModal';
-import CalendarModal from '../components/CalendarModal';
+import icon8 from '../../images/color.png'; // 色アイコン
+import TextModal from '../../components/TextModal';
+import MediaModal from '../../components/MediaModal';
+import CalendarModal from '../../components/CalendarModal';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -75,9 +77,15 @@ export const styles = {
         color: isActive ? '#fff' : 'black',
         cursor: 'pointer',
     }),
+    snsContainer: {
+        width: "80%",
+        display: 'flex',
+        fontSize: '0.875rem',
+        textAlign: "left",
+    }
 };
 
-const MakeFavoritePage = () => {
+const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [text, setText] = useState('');
     const [fontSize, setFontSize] = useState(16);
@@ -88,22 +96,66 @@ const MakeFavoritePage = () => {
     const [imageSize, setImageSize] = useState(100);
     const [events, setEvents] = useState([]); // State for calendar events
 
+    const [snsLinks, setSnsLinks] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        setIsLoading(true);
+        const decodedFavoriteName = decodeURIComponent(params.favoriteName);
+        const fetchFavorite = async () => {
+            await getFavorite({ oshi_name: decodedFavoriteName });
+        };
+        fetchFavorite();
+    }, []);
+
+    const getFavorite = async (data:
+        {
+            oshi_name: string;
+        }
+    ) => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/oshi/fetch-oshi-info`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    oshi_name: data.oshi_name,
+                }),
+            });
+
+            if (response.ok) {
+                const responseData = await response.json();
+                setSnsLinks(responseData.sns_links);
+                console.log('SNS links:', responseData.sns_links);
+            } else {
+                console.error('Failed to fetch genres');
+            }
+            setIsLoading(false);
+        } catch (error) {
+            console.error('Error fetching genres:', error);
+            setIsLoading(false);
+        } finally {
+            // setIsLoading(false); 
+        }
+    };
+
     const handleToggle = () => {
         setIsOpen(!isOpen);
     };
 
     const handleIconClick = (label) => {
         if (label === '元に戻す') {
-            if(insertedItems[insertedItems.length - 1].type === 'event') {
-                if(events.length === 0){
+            if (insertedItems[insertedItems.length - 1].type === 'event') {
+                if (events.length === 0) {
                     setInsertedItems(insertedItems.slice(0, -1));
-                }else{
+                } else {
                     setEvents((prevEvents) => prevEvents.slice(0, -1));
                 }
-            }else{
+            } else {
                 setInsertedItems(insertedItems.slice(0, -1));
             }
-            
+
         } else {
             setActiveModal(label);
         }
@@ -157,8 +209,27 @@ const MakeFavoritePage = () => {
         closeModal();
     };
 
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <div style={styles.container}>
+            <div style={styles.snsContainer}>
+                {Object.entries(snsLinks).map(([name, url]) => (
+                    <a key={name} href={url as string} target="_blank" rel="noopener noreferrer">
+                        {name === "youtube" ? (
+                            <Image src={"https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png"} alt={name} width={25} height={25} unoptimized />
+                        ) : name === "spotify" ? (
+                            <Image src={spotifyIcon} alt={name} width={25} height={25} unoptimized />
+                        ) : name === "x" ? (
+                            <Image src={xIcon} alt={name} width={25} height={25} unoptimized />
+                        ) : name === "instagram" ? (
+                            <Image src={"https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"} alt={name} width={25} height={25} unoptimized />
+                        ) : null}
+                    </a>
+                ))}
+            </div>
             {insertedItems.map((item, index) => {
                 if (item.type === 'text') {
                     return (
