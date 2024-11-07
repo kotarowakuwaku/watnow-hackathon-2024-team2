@@ -20,6 +20,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import jaLocale from '@fullcalendar/core/locales/ja';
+import SnsLinksModal from "@/app/components/SnsLinksModal";
 
 export const styles = {
     container: {
@@ -96,7 +97,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
     const [imageSize, setImageSize] = useState(100);
     const [events, setEvents] = useState([]); // State for calendar events
 
-    const [snsLinks, setSnsLinks] = useState([]);
+    const [snsLinks, setSnsLinks] = useState({});
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -179,6 +180,17 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
         setAlignment('left');
         closeModal();
     };
+
+    const handleAddSnsLinks = (newSnsLinks) => {
+        if(newSnsLinks.length !== 0) {
+            const snsData = {
+                type: 'sns',
+                snsLinks: newSnsLinks,
+            };
+            setInsertedItems([...insertedItems, snsData]);
+        }
+        closeModal();
+    }
 
     const handleComplete = () => {
         if (uploadedImage) {
@@ -326,6 +338,14 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
                     setImageSize={setImageSize}
                     closeModal={closeModal}
                     handleComplete={handleComplete}
+                />
+            )}
+
+            {activeModal === 'リンク' && (
+                <SnsLinksModal
+                    snsLinks={snsLinks}
+                    setSnsLinks={handleAddSnsLinks}
+                    closeModal={closeModal}
                 />
             )}
         </div>
