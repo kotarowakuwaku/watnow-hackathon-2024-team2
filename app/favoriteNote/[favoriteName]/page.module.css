@@ -1,0 +1,119 @@
+.loadingDonut {
+  width: 80px; /* ドーナツの幅 */
+  height: 80px; /* ドーナツの高さ */
+  border: 8px solid #94aee9; /* 初期色 */
+  border-top: 8px solid transparent; /* 上部分は透明に */
+  border-radius: 50%; /* 円形にする */
+  animation: spin 2s linear infinite, change-color 4s ease-in-out infinite; /* 回転と色変化のアニメーションをカンマで分ける */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes change-color {
+  0% {
+    border-color: #94aee9; /* 初期色 */
+    border-top-color: transparent;
+  }
+  25% {
+    border-color: #bca5d9; /* 色変更 */
+    border-top-color: transparent;
+  }
+  50% {
+    border-color: #e5c9f0; /* 色変更 */
+    border-top-color: transparent;
+  }
+  75% {
+    border-color: #b0e0f9; /* 色変更 */
+    border-top-color: transparent;
+  }
+  100% {
+    border-color: #94aee9; /* 元の色に戻る */
+    border-top-color: transparent;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  font-family: "JPfont";
+  justify-content: center;
+  align-items: center;
+  /* max-width: 600px; */
+  height: 100vh;
+  /* background: #4F4F4F, */
+}
+
+.title {
+  width: 80%;
+  font-size: 3rem;
+  font-weight: bold;
+  text-align: left;
+}
+.titleContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.genre {
+  width: 80%;
+  font-size: 1.25rem;
+  text-align: left;
+}
+.descriptionContainer {
+  display: flex;
+  justify-content: center;
+}
+.description {
+  width: 80%;
+  font-size: 0.875rem;
+  margin: 15px 0;
+  text-align: left;
+}
+.image {
+    justify-content:center ;
+  max-width: 100%;
+  border-radius: 8px;
+  max-height: 200px;
+}
+.officialLinkLabel {
+  width: 80%;
+  font-size: 0.875rem;
+  margin-top: 15px;
+  text-align: left;
+}
+.officialLink {
+  width: 80%;
+  font-size: 0.875rem;
+  text-decoration: underline;
+  text-align: left;
+}
+.snsContainerLabel {
+  width: 80%;
+  font-size: 0.875rem;
+  margin-top: 15px;
+  text-align: left;
+}
+.snsContainer {
+  width: 80%;
+  display: flex;
+  font-size: 0.875rem;
+  text-align: left;
+}
+.snsButton {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border: 1px solid #ccc;
+}
