@@ -32,17 +32,18 @@ export default function Header() {
             sx={{
               fontFamily: "JPFont",
               height: "100%",
+              fontSize: "34px",
               flexGrow: 4,
               display: "flex",
               //justifyContent: "center",
               alignItems: "flex-end",
               fontWeight: "bold",
-              marginLeft: "10px",
+              marginLeft: "30px",
               marginBottom: "10px",
               color: "#5D4C72",
             }}
           >
-            推し一覧
+            推しリスト
           </Typography>
   
           <Box

@@ -34,7 +34,7 @@ export default function Header() {
         {" "}
         {/* ボックスも高さ100%で合わせる */}
         <Box
-          sx={{ display: "flex", justifyContent: "center" }} /* 縦中央揃え */
+          sx={{ display: "flex", justifyContent: "center", }} /* 縦中央揃え */
         >
           <ToggleButtonGroup
             value={view}
@@ -46,7 +46,7 @@ export default function Header() {
               value="home"
               aria-label="home view"
               sx={{
-                width: "160px",
+                width: "200px",
                 height: "40px",
                 borderRadius: "20px",
                 backgroundColor: "#FCFCFA",
@@ -69,7 +69,7 @@ export default function Header() {
               value="list"
               aria-label="list view"
               sx={{
-                width: "160px",
+                width: "200px",
                 height: "40px",
                 borderRadius: "20px",
                 backgroundColor: "#FCFCFA",
