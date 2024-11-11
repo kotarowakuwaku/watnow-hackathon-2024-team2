@@ -46,7 +46,7 @@ const CustomFormControlLabel = styled(FormControlLabel, {
     borderRadius: "inherit",
     padding: "2px",
     background:
-      "conic-gradient(#EAC46A, #D5FCD5, #6C97EC, #0731FB, #7634DB, #FF44AA,#FF6E49,#FF8E03,#EAC463)", // 虹色ボーダー風の背景
+      "conic-gradient(#E0AAFF, #AA95EE, #E3ABF1, #6933C7, #1787EF, #66B2FA,#94CBFF,#E0AAFF)", // 虹色ボーダー風の背景
     opacity: checked ? 1 : 0, // クリック後は透明度を変更して遷移
     transition: "opacity 0.6s ease", // opacityに対して遷移を適用
     "-webkit-mask":
@@ -59,6 +59,9 @@ const CustomFormControlLabel = styled(FormControlLabel, {
     fontFamily: 'JPFont', // ここでlabelの文字サイズを変更
   },
 }));
+
+//      "conic-gradient(#EAC46A, #D5FCD5, #6C97EC, #0731FB, #7634DB, #FF44AA,#FF6E49,#FF8E03,#EAC463)", // 虹色ボーダー風の背景
+
 
 //          ? 'conic-gradient(#FE6658, #FFDA85, #90FFA2, #002AFF, #7B35DA, #FF40B2, #FE6658)' // 虹色ボーダー風の背景
 

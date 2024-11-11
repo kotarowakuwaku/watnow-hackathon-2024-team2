@@ -13,6 +13,8 @@ import styles from "./page.module.css"; // CSSモジュールのインポート
 
 import add from "../images/button.png";
 import Image from "next/image";
+import { useRouter } from 'next/navigation'; // この行を追加
+
 
 const Home = () => {
   const [groupedData, setGroupedData] = useState<{
@@ -38,13 +40,16 @@ const Home = () => {
 
   const getFavorites = async (data: { email: string }) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/oshi/get-user-oshi-genres`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: data.email }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/oshi/get-user-oshi-genres`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: data.email }),
+        }
+      );
 
       if (response.ok) {
         const responseData = await response.json();
@@ -86,7 +91,7 @@ const Home = () => {
       {loading ? (
         <div
           style={{
-            backgroundColor: "#F6F6F6",
+            backgroundColor: "#888999",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
@@ -106,7 +111,7 @@ const Home = () => {
 
         <>
           <Header />
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div style={{ display: "flex", justifyContent: "center", }}>
             <Toggle />
           </div>
           <Typography
@@ -117,7 +122,7 @@ const Home = () => {
               display: "flex",
               justifyContent: "flex-end",
               paddingRight: "20px",
-              backgroundColor: "#f6f6f6",
+              backgroundColor: "#",
             }}
           >
             <svg
@@ -130,22 +135,21 @@ const Home = () => {
                 d="M3 10h11v2H3zm0-2h11V6H3zm0 8h7v-2H3zm15.01-3.13l.71-.71a.996.996 0 0 1 1.41 0l.71.71c.39.39.39 1.02 0 1.41l-.71.71zm-.71.71l-5.3 5.3V21h2.12l5.3-5.3z"
               />
             </svg>
-            {/* <span style={{ marginLeft: "2px" }}>編集</span>{" "} */}
-            {/* Optional text beside the icon */}
           </Typography>
           <div
             style={{
-              backgroundColor: "#F6F6F6",
+              backgroundColor: "#888999",
               height: "calc(100vh - 100px)",
               overflowY: "auto",
               display: "flex",
-              justifyContent: "center",
+              flexDirection: "column",
+              paddingLeft: "4%"
             }}
           >
             {Object.keys(groupedData).map((tag) => (
               <div
                 key={tag}
-                style={{ fontFamily: "JPFont", margin: "30px 33px" }}
+                style={{ fontFamily: "JPFont", margin: "30px 33px", color:"#FFF" }}
               >
                 <h2 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
                   {tag}
@@ -159,7 +163,12 @@ const Home = () => {
                       style={{
                         height: "100px",
                         display: "flex",
+                        justifyContent: "center",
                         alignItems: "center",
+                        paddingLeft: "20px",
+                        margin: "10px 10px",
+                        boxShadow: "0px 3px 6px rgba(0, 0, 0, 0.5)",
+                        borderRadius: "10px",
                       }}
                     >
                       <div
@@ -239,14 +248,15 @@ const Home = () => {
               +
             </button> */}
             <Image
+              className={styles.add}
               src={add}
               alt="add"
               style={{
-                width: "90%",
-                height: "120px",
-                alignSelf: "flex-end",
-                marginBottom: "30px",
+                maxHeight: "120px",
+                alignSelf: "center",
+                justifyItems: "flex-end",
               }}
+              onClick={() => (window.location.href =('./selectFavorite'))}
             />
           </div>
         </>
