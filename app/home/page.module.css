@@ -7,6 +7,11 @@
   animation: spin 2s linear infinite, change-color 4s ease-in-out infinite; /* 回転と色変化のアニメーションをカンマで分ける */
 }
 
+.add{
+  width: 300px;
+  border-radius: 10px;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
