@@ -1,7 +1,10 @@
 'use client';
 
-import xIcon from "../../images/x.png"; // Ensure this path is correct
-import spotifyIcon from "../../images/spotify.png"; // Ensure this path is correct
+import xIcon from "../../images/x.png";
+import spotifyIcon from "../../images/spotify.png";
+import facebookIcon from "../../images/facebook.png";
+import appleMusicIcon from "../../images/Apple_Music_icon.png";
+import soundCloud from "../../images/soundcloud.png";
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import penIcon from '../../images/pen.png';
@@ -97,7 +100,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
     const [imageSize, setImageSize] = useState(100);
     const [events, setEvents] = useState([]); // State for calendar events
 
-    const [snsLinks, setSnsLinks] = useState({});
+    const [snsLinks, setSnsLinks] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -127,11 +130,15 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
 
             if (response.ok) {
                 const responseData = await response.json();
-                setSnsLinks(responseData.sns_links);
-                console.log('SNS links:', responseData.sns_links);
-            } else {
-                console.error('Failed to fetch genres');
+                setSnsLinks((prevLinks) => [
+                    ...prevLinks,
+                    ...Object.entries(responseData.sns_links)
+                        .filter(([name, url]) => url !== null && !prevLinks.some((link) => link.name === name))
+                        .map(([name, url]) => ({ name, url }))
+                ]);
+                console.log(snsLinks);
             }
+            
             setIsLoading(false);
         } catch (error) {
             console.error('Error fetching genres:', error);
@@ -187,6 +194,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
                 type: 'sns',
                 snsLinks: newSnsLinks,
             };
+            console.log(snsData);
             setInsertedItems([...insertedItems, snsData]);
         }
         closeModal();
@@ -220,6 +228,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
         }
         closeModal();
     };
+    
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -227,21 +236,6 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
 
     return (
         <div style={styles.container}>
-            <div style={styles.snsContainer}>
-                {Object.entries(snsLinks).map(([name, url]) => (
-                    <a key={name} href={url as string} target="_blank" rel="noopener noreferrer">
-                        {name === "youtube" ? (
-                            <Image src={"https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png"} alt={name} width={25} height={25} unoptimized />
-                        ) : name === "spotify" ? (
-                            <Image src={spotifyIcon} alt={name} width={25} height={25} unoptimized />
-                        ) : name === "x" ? (
-                            <Image src={xIcon} alt={name} width={25} height={25} unoptimized />
-                        ) : name === "instagram" ? (
-                            <Image src={"https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"} alt={name} width={25} height={25} unoptimized />
-                        ) : null}
-                    </a>
-                ))}
-            </div>
             {insertedItems.map((item, index) => {
                 if (item.type === 'text') {
                     return (
@@ -277,6 +271,32 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
                                 events={events} // Pass events to FullCalendar
                                 height='400px'
                             />
+                        </div>
+                    );
+                }else if (item.type === 'sns') {
+                    return (
+                        <div key={index} style={styles.snsContainer}>
+                            {item.snsLinks.map((snsLink) => (
+                                <div key={snsLink.name}>
+                                    <a href={snsLink.url} target="_blank" rel="noopener noreferrer">
+                                    <Image
+                                src={
+                                    snsLink.name === "youtube" ? "https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" :
+                                    snsLink.name === "spotify" ? spotifyIcon :
+                                    snsLink.name === "x" ? xIcon :
+                                    snsLink.name === "instagram" ? "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" :
+                                    snsLink.name === "facebook" ? facebookIcon :    
+                                    snsLink.name === "soundcloud" ? soundCloud :
+                                    snsLink.name === "applemusic" ? appleMusicIcon :
+                                    ""
+                                }
+                                alt={snsLink.name}
+                                width={30}
+                                height={30}
+                            />
+                                    </a>
+                                </div>
+                            ))}
                         </div>
                     );
                 }

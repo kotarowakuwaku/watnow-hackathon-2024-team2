@@ -9,15 +9,10 @@ import Image from 'next/image';
 
 type SnsLinksModalProps = {
     snsLinks: {
-        applemusic?: string;
-        facebook?: string;
-        instagram?: string;
-        soundcloud?: string;
-        spotify?: string;
-        x?: string;
-        youtube?: string;
-    };
-    setSnsLinks: (selectedLinks: string[]) => void;
+        name: string;
+        url: string;
+    }[];
+    setSnsLinks: (checkedLinks: string[]) => void;
     closeModal: () => void;
 };
 
@@ -60,21 +55,31 @@ const styles = {
 };
 
 const SnsLinksModal = ({ snsLinks, setSnsLinks, closeModal }: SnsLinksModalProps) => {
-    const [selectedLinks, setSelectedLinks] = useState<string[]>([]);
+    const [checkedLinks, setCheckedLinks] = useState<string[]>([]);
+    const [selectedSns, setSelectedSns] = useState<string[]>([]);
 
-    const handleCheckboxChange = (name: string) => {
-        setSelectedLinks(prevSelected => {
+    const handleCheckboxChange = (name: string, url:string) => {
+        setCheckedLinks(prevSelected => {
             if (prevSelected.includes(name)) {
                 return prevSelected.filter(link => link !== name);
             } else {
                 return [...prevSelected, name];
             }
         });
+        setSelectedSns(prevSelected => {
+            const existingIndex = prevSelected.findIndex(link => link.name === name);
+            if (existingIndex !== -1) {
+                return prevSelected.filter(link => link.name !== name);
+            } else {
+                return [...prevSelected, { name, url }];
+            }
+        });
+        
     };
 
     const handleConfirm = () => {
         console.log('決定ボタンがクリックされました');
-        setSnsLinks(selectedLinks);
+        setSnsLinks(selectedSns);
         closeModal();
     };
 
@@ -82,33 +87,32 @@ const SnsLinksModal = ({ snsLinks, setSnsLinks, closeModal }: SnsLinksModalProps
         <div style={styles.modal}>
             <div style={styles.container}>
                 <div style={styles.snsContainer}>
-                    {Object.entries(snsLinks).map(([name, url]) => (
-                        <label key={name} style={styles.label}>
+                    {snsLinks.map((sns) => (
+                        <label key={sns.name} style={styles.label}>
                             <input
                                 type="checkbox"
                                 name="snsLink"
-                                value={url}
-                                checked={selectedLinks.includes(name)}
-                                onChange={() => handleCheckboxChange(name)}
+                                checked={checkedLinks.includes(sns.name)}
+                                onChange={() => handleCheckboxChange(sns.name, sns.url)}
                                 style={{ display: 'none' }} // チェックボックスを非表示に
                             />
                             <Image
                                 src={
-                                    name === "youtube" ? "https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" :
-                                    name === "spotify" ? spotifyIcon :
-                                    name === "x" ? xIcon :
-                                    name === "instagram" ? "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" :
-                                    name === "facebook" ? facebookIcon :    
-                                    name === "soundcloud" ? soundCloud :
-                                    name === "applemusic" ? appleMusicIcon :
+                                    sns.name === "youtube" ? "https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" :
+                                    sns.name === "spotify" ? spotifyIcon :
+                                    sns.name === "x" ? xIcon :
+                                    sns.name === "instagram" ? "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" :
+                                    sns.name === "facebook" ? facebookIcon :    
+                                    sns.name === "soundcloud" ? soundCloud :
+                                    sns.name === "applemusic" ? appleMusicIcon :
                                     ""
                                 }
-                                alt={name}
+                                alt={sns.name}
                                 width={25}
                                 height={25}
                                 style={{
                                     ...styles.icon,
-                                    ...(selectedLinks.includes(name) ? styles.iconSelected : {}),
+                                    ...(checkedLinks.includes(sns.name) ? styles.iconSelected : {}),
                                 }}
                             />
                         </label>
