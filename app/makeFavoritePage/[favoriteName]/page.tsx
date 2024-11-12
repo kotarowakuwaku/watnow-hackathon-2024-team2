@@ -136,7 +136,6 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
                         .filter(([name, url]) => url !== null && !prevLinks.some((link) => link.name === name))
                         .map(([name, url]) => ({ name, url }))
                 ]);
-                console.log(snsLinks);
             }
             
             setIsLoading(false);

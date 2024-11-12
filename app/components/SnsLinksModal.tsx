@@ -78,7 +78,6 @@ const SnsLinksModal = ({ snsLinks, setSnsLinks, closeModal }: SnsLinksModalProps
     };
 
     const handleConfirm = () => {
-        console.log('決定ボタンがクリックされました');
         setSnsLinks(selectedSns);
         closeModal();
     };
