@@ -24,6 +24,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import jaLocale from '@fullcalendar/core/locales/ja';
 import SnsLinksModal from "@/app/components/SnsLinksModal";
+import { InsertChart } from "@mui/icons-material";
 
 export const styles = {
     container: {
@@ -102,6 +103,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
 
     const [snsLinks, setSnsLinks] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [submitData, setSubmitData] = useState([]);
 
     useEffect(() => {
         setIsLoading(true);
@@ -137,7 +139,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
                         .map(([name, url]) => ({ name, url }))
                 ]);
             }
-            
+
             setIsLoading(false);
         } catch (error) {
             console.error('Error fetching genres:', error);
@@ -163,7 +165,54 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
                 setInsertedItems(insertedItems.slice(0, -1));
             }
 
-        } else {
+        } else if (label === '') {
+            insertedItems.map((item: any) => {
+                if (item.type === 'text') {
+                    setSubmitData([
+                        ...submitData,
+                        {
+                            type: item.type,
+                            text: item.text,
+                            fontSize: item.fontSize,
+                            alignment: item.alignment,
+                            order_index: insertedItems.indexOf(item),
+                        }
+                    ]);
+                } else if (item.type === 'image') {
+                    setSubmitData([
+                        ...submitData,
+                        {
+                            type: item.type,
+                            src: item.src,
+                            size: item.size,
+                            order_index: insertedItems.indexOf(item),
+                        }
+                    ]);
+                } else if (item.type === 'event') {
+                    setSubmitData([
+                        ...submitData,
+                        {
+                            type: item.type,
+                            title: item.title,
+                            start: item.start,
+                            end: item.end,
+                            order_index: insertedItems.indexOf(item),
+                        }
+                    ]);
+                } else if (item.type === 'sns') {
+                    setSubmitData([
+                        ...submitData,
+                        {
+                            type: item.type,
+                            snsLinks: item.snsLinks,
+                            order_index: insertedItems.indexOf(item),
+                        }
+                    ]);
+                }
+            });
+            console.log(submitData);  
+        }
+        else {
             setActiveModal(label);
         }
     };
@@ -188,12 +237,11 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
     };
 
     const handleAddSnsLinks = (newSnsLinks) => {
-        if(newSnsLinks.length !== 0) {
+        if (newSnsLinks.length !== 0) {
             const snsData = {
                 type: 'sns',
                 snsLinks: newSnsLinks,
             };
-            console.log(snsData);
             setInsertedItems([...insertedItems, snsData]);
         }
         closeModal();
@@ -227,7 +275,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
         }
         closeModal();
     };
-    
+
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -272,27 +320,27 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
                             />
                         </div>
                     );
-                }else if (item.type === 'sns') {
+                } else if (item.type === 'sns') {
                     return (
                         <div key={index} style={styles.snsContainer}>
                             {item.snsLinks.map((snsLink) => (
                                 <div key={snsLink.name}>
                                     <a href={snsLink.url} target="_blank" rel="noopener noreferrer">
-                                    <Image
-                                src={
-                                    snsLink.name === "youtube" ? "https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" :
-                                    snsLink.name === "spotify" ? spotifyIcon :
-                                    snsLink.name === "x" ? xIcon :
-                                    snsLink.name === "instagram" ? "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" :
-                                    snsLink.name === "facebook" ? facebookIcon :    
-                                    snsLink.name === "soundcloud" ? soundCloud :
-                                    snsLink.name === "applemusic" ? appleMusicIcon :
-                                    ""
-                                }
-                                alt={snsLink.name}
-                                width={30}
-                                height={30}
-                            />
+                                        <Image
+                                            src={
+                                                snsLink.name === "youtube" ? "https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" :
+                                                    snsLink.name === "spotify" ? spotifyIcon :
+                                                        snsLink.name === "x" ? xIcon :
+                                                            snsLink.name === "instagram" ? "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" :
+                                                                snsLink.name === "facebook" ? facebookIcon :
+                                                                    snsLink.name === "soundcloud" ? soundCloud :
+                                                                        snsLink.name === "applemusic" ? appleMusicIcon :
+                                                                            ""
+                                            }
+                                            alt={snsLink.name}
+                                            width={30}
+                                            height={30}
+                                        />
                                     </a>
                                 </div>
                             ))}
