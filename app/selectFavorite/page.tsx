@@ -78,7 +78,7 @@ const SelectFavorite = () => {
 
             if (response.ok) {
                 const responseData = await response.json();
-                setGenles(responseData);
+                setGenles(responseData.genres);
             } else {
                 console.error('Failed to fetch genres');
                 setGenles([]);
