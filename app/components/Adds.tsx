@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Sbutton from "../images/sbutton.png";
-import button from "../images/button.png";
+import button from "../images/rbutton.png";
 
 const ResponsiveButton = () => {
   const [buttonImage, setButtonImage] = useState("");
@@ -25,16 +25,31 @@ const ResponsiveButton = () => {
       style={{
         background: "none",
         border: "none",
-        paddingBottom: "30px",
-        //maxWidth: "0%",
+        paddingBottom: isLargeScreen ? "40px" : "10px",
+        position: "fixed",
+        bottom: "0",       // 画面の下部に配置
+        left: "50%",       // 画面の中央に配置（水平）
+        transform: isLargeScreen ? "translateX(10%)" : "translateX(-50%)",  // 水平中央揃え
+        zIndex: 1000,      // 他の要素より前面に表示
+        backdropFilter: "blur(0.5px)",  // 背景をぼやけさせる
+        //width: "100%",
+        display: "flex",
+        marginRight: "20px",
+        justifyContent: buttonImage === Sbutton.src ? "center" : isLargeScreen ? "flex-end" : "center",
+       // paddingRight: isLargeScreen ? "80px" : "0px",
+        alignItems: "center",
+        cursor: "pointer",  // ��ウスカー��ルをボタンに合わせる
+        backgroundColor: "rgba(0, 0, 0, 0.001)",  // 半透明の黒背景
       }}
     >
       <img
         src={buttonImage}
         alt="Responsive Button"
         style={{
+          width: "100%",
           marginTop: buttonImage=== Sbutton.src ? "0px" : "30px",
-          width: buttonImage === Sbutton.src ? "84px" : isLargeScreen ? "450px" : "300px",
+          width: buttonImage === Sbutton.src ? "84px" : isLargeScreen ? "360px" : "300px",
+
         }}
         onClick={() => (window.location.href = "./selectFavorite")}
       />

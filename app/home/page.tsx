@@ -265,7 +265,7 @@ const Home = () => {
               onClick={() => (window.location.href = "./selectFavorite")}
             /> */}
 
-            <div style={{ display: "flex", justifyContent: "center" }}>
+            <div style={{ display: "flex", justifyContent: "center", }}>
               <Adds /> 
             </div>
 
