@@ -24,7 +24,6 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import jaLocale from '@fullcalendar/core/locales/ja';
 import SnsLinksModal from "@/app/components/SnsLinksModal";
-import { Co2Sharp, InsertChart } from "@mui/icons-material";
 import { supabase } from "@/app/utils/supabase/supabase";
 
 export const styles = {
@@ -285,6 +284,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
     const closeModal = () => {
         setActiveModal(null);
         setUploadedImage(null);
+        console.log(events);
     };
 
     const handleText = () => {

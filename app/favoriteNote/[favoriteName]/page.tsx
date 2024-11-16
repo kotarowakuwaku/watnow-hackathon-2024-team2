@@ -4,19 +4,18 @@ import React, { useEffect, useState } from 'react';
 import xIcon from "../../images/x.png"; // Ensure this path is correct
 import spotifyIcon from "../../images/spotify.png"; // Ensure this path is correct
 import Image from 'next/image';
-import Btn from '@/app/components/Button';
-import { CSSProperties } from 'react';
+import facebookIcon from "../../images/facebook.png";
+import appleMusicIcon from "../../images/Apple_Music_icon.png";
+import soundCloud from "../../images/soundcloud.png";
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import jaLocale from '@fullcalendar/core/locales/ja';
 
 const Preview = ({ params }: { params: { favoriteName: string } }) => {
-    const [getData, setGetData] = useState({
-        oshi_name: "",
-        profession: "",
-        summary: "",
-        image_url: "",
-        official_site: "",
-        sns_links: {}, // オブジェクト形式
-    });
+    const [getData, setGetData] = useState([]);
     const [isLoading, setIsLoading] = useState(true); // ローディングステート
+    const [events, setEvents] = useState([]);
 
     useEffect(() => {
         const decodedFavoriteName = decodeURIComponent(params.favoriteName);
@@ -24,6 +23,11 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
             const userEmail = localStorage.getItem('userEmail');
             if (userEmail) {
                 await getFavorite({ oshi_name: decodedFavoriteName, email: userEmail });
+                getData.map((item) => {
+                    if(item.type === 'event'){
+                        setEvents({title: item.title, start: item.start, end: item.end});
+                    }
+                });
             } else {
                 console.log("email is not found");
             }
@@ -38,7 +42,7 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
         }
     ) => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/oshi/get-oshi-info`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/content/fetch-content`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -51,7 +55,7 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
 
             if (response.ok) {
                 const responseData = await response.json();
-                setGetData(responseData);
+                setGetData(responseData.content);
             } else {
                 console.error('Failed to fetch genres');
             }
@@ -62,142 +66,138 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
         }
     };
 
-    const styles: { [key: string]: CSSProperties } = {
+    const styles = {
         container: {
+            position: 'relative',
+            height: "100vh",
+        },
+        button: (isOpen) => ({
+            position: 'absolute',
+            bottom: isOpen ? '210px' : '20px',
+            right: '20px',
+            width: '76px',
+            height: '76px',
+            borderRadius: '50%',
+            fontSize: '56px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            border: '4px solid transparent',
+            background: 'linear-gradient(white, white), linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)',
+            backgroundClip: 'padding-box, border-box',
+            padding: '5px',
+            transition: 'bottom 0.3s ease',
+            zIndex: 13,
+        }),
+        tabContainer: (isOpen) => ({
+            position: 'absolute',
+            width: "80%",
+            bottom: '30px',
+            right: '-30%',
+            transform: 'translateX(-50%)',
+            backgroundColor: '#D9D9D9',
+            borderRadius: '50px',
+            padding: '40px',
+            zIndex: 10,
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: '20px',
+            opacity: isOpen ? 1 : 0,
+            transition: 'opacity 0.3s ease',
+        }),
+        iconContainer: {
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'center',
             alignItems: 'center',
-            maxWidth: '600px',
-            height: '100vh',
-            color: '#4F4F4F',
+            cursor: 'pointer',
         },
-        loading: {
-            fontSize: '2rem',
-            textAlign: 'center',
-            margin: '20px 0',
+        label: {
+            marginTop: '8px',
+            fontSize: "0.625rem",
         },
-        title: {
-            width: "80%",
-            fontSize: '3rem',
-            fontWeight: 'bold',
-            textAlign: "left"
-        },
-        titleContainer: {
-            width: "100%",
-            display: 'flex',
-            justifyContent: 'center',
-        },
-        genre: {
-            width: "80%",
-            fontSize: '1.25rem',
-            textAlign: "left"
-        },
-        descriptionContainer: {
-            display: 'flex',
-            justifyContent: 'center',
-        },
-        description: {
-            width: "80%",
-            fontSize: '0.875rem',
-            margin: '15px 0',
-            textAlign: "left",
-        },
-        image: {
-            maxWidth: '100%',
-            borderRadius: '8px',
-            maxHeight: '200px',
-        },
-        officialLinkLabel: {
-            width: "80%",
-            fontSize: '0.875rem',
-            marginTop: '15px',
-            textAlign: "left",
-        },
-        officialLink: {
-            width: "80%",
-            fontSize: '0.875rem',
-            textDecoration: 'underline',
-            textAlign: "left",
-        },
-        snsContainerLabel: {
-            width: "80%",
-            fontSize: '0.875rem',
-            marginTop: '15px',
-            textAlign: "left",
-        },
+        alignmentButton: (isActive) => ({
+            border: 'none',
+            background: isActive ? '#969696' : 'transparent',
+            color: isActive ? '#fff' : 'black',
+            cursor: 'pointer',
+        }),
         snsContainer: {
             width: "80%",
             display: 'flex',
             fontSize: '0.875rem',
             textAlign: "left",
-        },
-        snsButton: {
-            width: '40px',
-            height: '40px',
-            borderRadius: '50%',
-            marginRight: '10px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: '#fff',
-            border: '1px solid #ccc',
-        },
+        }
     };
 
     return (
         <div style={styles.container}>
-            {isLoading ? (
-                <div style={styles.loading}>Loading...</div>
-            ) : (
-                <>
-                    <div style={styles.titleContainer}>
-                        <h1 style={styles.title}>{getData.oshi_name}</h1>
-                    </div>
-                    {getData.profession !== "職業が見つかりません" && (
-                        <div style={styles.titleContainer}>
-                            <h2 style={styles.genre}>{getData.profession}</h2>
+            {getData.map((item, index) => {
+                if (item.type === 'text') {
+                    return (
+                        <div key={index} style={{ textAlign: item.alignment, fontSize: item.fontSize ? `${item.fontSize}px` : undefined }}>
+                            {item.text}
                         </div>
-                    )}
-                    <img src={getData.image_url} alt={getData.oshi_name} style={styles.image} />
-                    {getData.summary !== "概要が見つかりません" && (
-                        <div style={styles.descriptionContainer}>
-                            <p style={styles.description}>{getData.summary}</p>
+                    );
+                } else if (item.type === 'image') {
+                    return (
+                        <img key={index} src={item.src} alt={`uploaded-${index}`} style={{ width: `${item.size}%`, height: 'auto' }} />
+                    );
+                } else if (item.type === 'event') {
+                    return (
+                        <div key={index} style={{
+                            width: '90%',
+                            height: 'auto',
+                            margin: 'auto',
+                            border: '1px solid #ccc',
+                            borderRadius: '5px',
+                            padding: '10px',
+                            marginBottom: '10px',
+                        }}>
+                            <FullCalendar
+                                plugins={[dayGridPlugin, timeGridPlugin]}
+                                initialView="dayGridMonth"
+                                locales={[jaLocale]}
+                                locale='ja'
+                                headerToolbar={{
+                                    left: 'prev,next today',
+                                    center: 'title',
+                                    right: '',
+                                }}
+                                events={events} // Pass events to FullCalendar
+                                height='400px'
+                            />
                         </div>
-                    )}
-                    <div style={styles.titleContainer}>
-                        <p style={styles.officialLinkLabel}>officialサイト</p>
-                    </div>
-                    <div style={styles.titleContainer}>
-                        <a href={getData.official_site} style={styles.officialLink}>{getData.official_site}</a>
-                    </div>
-                    <div style={styles.titleContainer}>
-                        <p style={styles.officialLinkLabel}>SNSリンク</p>
-                    </div>
-                    <div style={styles.titleContainer}>
-                        <div style={styles.snsContainer}>
-                            {Object.entries(getData.sns_links).map(([name, url]) => (
-                                <a key={name} href={url as string} target="_blank" rel="noopener noreferrer" style={styles.snsButton}>
-                                    {name === "youtube" ? (
-                                        <Image src={"https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png"} alt={name} width={25} height={25} unoptimized />
-                                    ) : name === "spotify" ? (
-                                        <Image src={spotifyIcon} alt={name} width={25} height={25} unoptimized />
-                                    ) : name === "x" ? (
-                                        <Image src={xIcon} alt={name} width={25} height={25} unoptimized />
-                                    ) : name === "instagram" ? (
-                                        <Image src={"https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"} alt={name} width={25} height={25} unoptimized />
-                                    ) : null}
-                                </a>
+                    );
+                } else if (item.type === 'sns') {
+                    return (
+                        <div key={index} style={styles.snsContainer}>
+                            {item.snsLinks.map((snsLink) => (
+                                <div key={snsLink.name}>
+                                    <a href={snsLink.url} target="_blank" rel="noopener noreferrer">
+                                        <Image
+                                            src={
+                                                snsLink.name === "youtube" ? "https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" :
+                                                    snsLink.name === "spotify" ? spotifyIcon :
+                                                        snsLink.name === "x" ? xIcon :
+                                                            snsLink.name === "instagram" ? "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" :
+                                                                snsLink.name === "facebook" ? facebookIcon :
+                                                                    snsLink.name === "soundcloud" ? soundCloud :
+                                                                        snsLink.name === "applemusic" ? appleMusicIcon :
+                                                                            ""
+                                            }
+                                            alt={snsLink.name}
+                                            width={30}
+                                            height={30}
+                                        />
+                                    </a>
+                                </div>
                             ))}
                         </div>
-                    </div>
-                    <div style={{
-                        marginTop: "50px",
-                    }}>
-                        <Btn type={"button"} text={"一覧に戻る"} onClick={() => window.location.href = "/home"} />
-                    </div>
-                </>
-            )}
+                    );
+                }
+                return null;
+            })}
         </div>
     );
 };
