@@ -217,7 +217,7 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
                 display: 'flex',
                 justifyContent: 'center',
             }}>
-            <Button type='button' text='戻る' onClick={() => { window.location.href = "/home"; }}/>
+            <Button type='button' text='推し一覧ページに戻る' onClick={() => { window.location.href = "/home"; }}/>
             </div>
         </div>
     );
