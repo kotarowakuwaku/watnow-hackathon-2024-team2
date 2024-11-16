@@ -7,6 +7,8 @@ import Btn from "../components/Button"; // コンポーネントのパスを修�
 import mail from "../images/reg2.png";
 import key from "../images/reg3.png";
 import { CSSProperties } from "react";
+import Rtn from "../components/Return";
+import returnIcon from "../images/return.png";
 // import styles from "./page.module.css";
 
 const styles: { [key: string]: CSSProperties } = {
@@ -32,10 +34,10 @@ const styles: { [key: string]: CSSProperties } = {
   h1: {
     fontFamily: "JPFont",
     marginRight: "0%",
-    marginTop: "165px",
+    marginTop: "30px",
     fontSize: "35px",
     fontWeight: "bold",
-    marginBottom: "30px",
+    marginBottom: "10px",
     justifyContent: "center",
   },
   h2: {
@@ -166,6 +168,7 @@ const NewRegistration = () => {
         </div>
       ) : (
         <>
+        
           <div style={{ display: "flex", justifyContent: "center" }}>
             <h1 style={styles.h1}>ログイン</h1>
           </div>
@@ -259,6 +262,14 @@ const NewRegistration = () => {
               text="新規登録画面へ"
               onClick={() => (window.location.href = "./newRegistration")}
             />
+            <div style={{justifySelf: "center",marginTop: "1  0px",}}>
+            <Rtn
+              type="button"
+              text="戻る"
+              onClick={() => (window.location.href = "./")}
+              iconSrc={returnIcon}
+            />
+          </div>
           </div>
         </>
       )}
