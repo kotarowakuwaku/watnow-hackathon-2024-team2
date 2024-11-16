@@ -5,6 +5,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import IconButton from "@mui/material/IconButton";
+import { radioClasses } from "@mui/material";
 
 export default function Header() {
   return (
@@ -16,6 +17,7 @@ export default function Header() {
           color: "black",
           boxShadow: "-moz-initial",
           height: "140px",//wwwwwww
+          borderRadius: "5px",
         }}
       >
         <Toolbar
