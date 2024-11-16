@@ -11,21 +11,20 @@
   /* justify-content: center; */
 }
 
-.title{
-    width: 255px;
+.title {
+  width: 255px;
 }
 
 @media (min-width: 600px) {
   .text {
     font-size: 30px;
   }
-  .title{
+  .title {
     width: 400px;
   }
 
-  .button{
+  .button {
     width: 200px;
     /* justify-content: center; */
   }
 }
-
