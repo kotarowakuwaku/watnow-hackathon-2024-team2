@@ -25,6 +25,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import jaLocale from '@fullcalendar/core/locales/ja';
 import SnsLinksModal from "@/app/components/SnsLinksModal";
 import { supabase } from "@/app/utils/supabase/supabase";
+import Button from "@/app/components/Button";
 
 export const styles = {
     container: {
@@ -87,7 +88,26 @@ export const styles = {
         display: 'flex',
         fontSize: '0.875rem',
         textAlign: "left",
-    }
+    },
+    overlay: {
+        position: 'fixed',
+        bottom: '0', // 画面下から30pxの位置
+        left: '50%', // 横方向は中央
+        transform: 'translateX(-50%)', // 完全に中央に配置
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        opacity: 0.7, // ホバーしていないときは色が薄い
+        transition: 'opacity 0.3s ease', // 透明度の変化をスムーズに
+        zIndex: 10,
+    },
+    buttonContainer: {
+        position: 'relative',
+        zIndex: 11, // ボタンが最前面に表示されるように
+    },
+    overlayHover: {
+        opacity: 1, // ホバー時に色を濃くする
+    },
 };
 
 const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
@@ -144,7 +164,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
             console.error('Error fetching genres:', error);
             setIsLoading(false);
         } finally {
-            setIsLoading(false); 
+            setIsLoading(false);
         }
     };
 
@@ -164,10 +184,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
                 setInsertedItems(insertedItems.slice(0, -1));
             }
 
-        } else if (label === '') {
-            onSubmit(insertedItems);
-        }
-        else {
+        } else {
             setActiveModal(label);
         }
     };
@@ -241,7 +258,6 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
 
         const decodedFavoriteName = decodeURIComponent(params.favoriteName);
         const userEmail = localStorage.getItem('userEmail');
-        console.log(newSubmitData);
         if (userEmail && decodedFavoriteName && newSubmitData) {
             await submitFavorite({ oshi_name: decodedFavoriteName, email: userEmail, content: newSubmitData });
         } else {
@@ -284,7 +300,6 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
     const closeModal = () => {
         setActiveModal(null);
         setUploadedImage(null);
-        console.log(events);
     };
 
     const handleText = () => {
@@ -436,6 +451,11 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
                             <span style={styles.label}>{icon.label}</span>
                         </div>
                     ))}
+                    <div
+                        style={styles.overlay}
+                    >
+                        <Button type="submit" text="推しノート完成!" onClick={() => onSubmit(insertedItems)} />
+                    </div>
                 </div>
             )}
 
