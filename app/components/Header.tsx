@@ -12,10 +12,11 @@ export default function Header() {
       <AppBar
         position="static"
         sx={{
-          backgroundColor: "white",
+          backgroundColor: "#888999",
           color: "black",
-          boxShadow: "none",
-          height: "90px",
+          boxShadow: "-moz-initial",
+          height: "140px",//wwwwwww
+          borderRadius: "5px",
         }}
       >
         <Toolbar
@@ -28,41 +29,24 @@ export default function Header() {
           }}
         >
           <Typography
-            variant="h6"
-            color="inherit"
-            component="div"
-            sx={{ display: "flex", alignItems: "center" }}
-          >
-            <button
-              style={{
-                fontFamily: "JPFont",
-                fontSize: "18px",
-                color: "blue",
-                border: "none",
-                background: "none",
-                cursor: "pointer",
-                marginBottom: "40 px",
-              }}
-            >
-              編集
-            </button>
-          </Typography>
-          <Typography
-            variant="h6"
+            variant="h5"
             sx={{
               fontFamily: "JPFont",
               height: "100%",
+              fontSize: "34px",
               flexGrow: 4,
               display: "flex",
-              justifyContent: "center",
+              //justifyContent: "center",
               alignItems: "flex-end",
               fontWeight: "bold",
-              marginLeft: '20px',
+              marginLeft: "30px",
               marginBottom: "10px",
+              color: "#FFFF",
             }}
           >
-            推し一覧
+            推しリスト
           </Typography>
+  
           <Box
             sx={{ paddingLeft: "0px", display: "flex", alignItems: "center" }}
           >

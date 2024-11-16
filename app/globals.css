@@ -16,15 +16,17 @@
 
 @font-face {
   font-family: 'JPFont';
-  src: url('./fonts/NotoSansJP-VariableFont_wght.ttf') format('woff');
+  src: url('./fonts/ShipporiGothicB2-Bold.ttf') format('woff');
   font-weight: normal;
   font-style: normal;
+  color: "#FFF";
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: 'MyCustomFont', sans-serif;
+  cursor:url("./images/point.png"),auto;
 }
 
 @layer utilities {
