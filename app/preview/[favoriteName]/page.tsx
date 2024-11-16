@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { CSSProperties } from 'react';
+import styless from "./page.module.css";
 
 // スタイル付きチェックボックス
 const CustomCheckbox = styled(Checkbox)(() => ({
@@ -211,7 +212,7 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            maxWidth: '600px',
+            //maxWidth: '600px',
             height: '100vh',
             color: '#4F4F4F',
         },
@@ -290,8 +291,24 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
 
     return (
         <div style={styles.container}>
-            {isLoading || submitting ? (
-                <div style={styles.loading}>Loading...</div>
+            {isLoading ? (
+        <div
+          style={{
+            backgroundColor: "#F5F5F5",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+            width: "100%",
+          }}
+        >
+          <div className={styless.loadingDonut}></div>{" "}
+          {/* モジュールからクラスを使用 */}
+          <p style={{ marginTop: "20px", fontFamily: "JPFont" }}>
+            Loading... Please wait...
+          </p>
+        </div>
             ) : (
                 !submitted ? (
                     <>
