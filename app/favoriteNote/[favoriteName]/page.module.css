@@ -42,7 +42,7 @@
 .container {
   display: flex;
   flex-direction: column;
-  font-family: "JPfont";
+  font-family: "JPFont";
   justify-content: center;
   align-items: center;
   /* max-width: 600px; */
