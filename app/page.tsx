@@ -5,6 +5,7 @@ import Image from "next/image";
 import Btn from "./components/Button";
 import styles from "./page.module.css";
 import point from "./images/point.png";
+import googleIcon from "./images/Google.png";
 
 export default function Home() {
   const handleClick = () => {
@@ -29,18 +30,15 @@ export default function Home() {
       >
         {/* Apply the CSS module class */}
         <p className={styles.text}>好きな情報をまとめて管理</p>
-        <Image
-          className={styles.title}
-          src={title}
-          alt="title"
-        />
+        <Image className={styles.title} src={title} alt="title" />
         <div
           className={styles.button}
           style={{
             marginTop: "50px",
             display: "flex",
             flexFlow: "column",
-            alignItems: "center"
+            alignItems: "center",
+            width: "100%",
           }}
         >
           <Btn
@@ -49,6 +47,15 @@ export default function Home() {
             onClick={() => (window.location.href = "/login")}
           />
           <Btn type={"button"} text={"新規登録"} onClick={handleClick} />
+          <p style={{ fontFamily: "JPFont", marginBottom:"-20px", marginTop: "40px" }}>
+            以下のアカウントで続行
+          </p>
+          <Btn
+            text={"Google"}
+            type={"button"}
+            iconSrc={googleIcon}
+            onClick={() => (window.location.href = "/login")}
+          />
         </div>
       </main>
       <footer
