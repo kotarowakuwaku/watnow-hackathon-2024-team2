@@ -31,12 +31,12 @@ const styles: { [key: string]: CSSProperties } = {
   },
   h1: {
     fontFamily: "JPFont",
-    marginRight: "40%",
+    marginRight: "0%",
     marginTop: "165px",
     fontSize: "35px",
     fontWeight: "bold",
     marginBottom: "30px",
-    justifyContent: "flex-start",
+    justifyContent: "center",
   },
   h2: {
     marginLeft: "32px",
