@@ -11,23 +11,20 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import jaLocale from '@fullcalendar/core/locales/ja';
+import Button from '@/app/components/Button';
 
 const Preview = ({ params }: { params: { favoriteName: string } }) => {
     const [getData, setGetData] = useState([]);
     const [isLoading, setIsLoading] = useState(true); // ローディングステート
-    const [events, setEvents] = useState([]);
+    const [events, setEvents] = useState<{ title: string; start: string; end: string }[]>([]);
 
     useEffect(() => {
+        setIsLoading(true); // データ取得前にローディングを開始
         const decodedFavoriteName = decodeURIComponent(params.favoriteName);
         const fetchFavorite = async () => {
             const userEmail = localStorage.getItem('userEmail');
             if (userEmail) {
                 await getFavorite({ oshi_name: decodedFavoriteName, email: userEmail });
-                getData.map((item) => {
-                    if(item.type === 'event'){
-                        setEvents({title: item.title, start: item.start, end: item.end});
-                    }
-                });
             } else {
                 console.log("email is not found");
             }
@@ -55,8 +52,22 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
 
             if (response.ok) {
                 const responseData = await response.json();
-                setGetData(responseData.content);
-            } else {
+                // order_index に基づいて並べ替え
+                const sortedContent = responseData.content.sort((a, b) => a.order_index - b.order_index);
+                console.log(responseData.content);
+                console.log(sortedContent);
+                setGetData(sortedContent); // 並び替えたデータをセット
+                responseData.content.map((item) => {
+                    if (item.type === 'event') {
+                        setEvents((prevEvents) => {
+                            if (!prevEvents.some(event => event.title === item.title)) {
+                                return [...prevEvents, { title: item.title, start: item.start_date, end: item.end_date }];
+                            }
+                            return prevEvents;
+                        });
+                    }
+                });
+            }else {
                 console.error('Failed to fetch genres');
             }
         } catch (error) {
@@ -130,6 +141,10 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
         }
     };
 
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <div style={styles.container}>
             {getData.map((item, index) => {
@@ -198,6 +213,12 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
                 }
                 return null;
             })}
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+            }}>
+            <Button type='button' text='戻る' onClick={() => { window.location.href = "/home"; }}/>
+            </div>
         </div>
     );
 };
