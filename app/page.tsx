@@ -12,6 +12,27 @@ export default function Home() {
     window.location.href = "/newRegistration";
   };
 
+  const loginGoogle = async () => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/login/google`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (response.ok) {
+        const { redirectUrl } = await response.json(); // サーバーからリダイレクトURLを受け取る
+        window.location.href = redirectUrl; // リダイレクトを実行
+      } else {
+        console.error('Failed to initiate Google login:', await response.text());
+      }
+    } catch (error) {
+      console.error('Error initiating Google login:', error);
+    }
+  };
+  
+
   return (
     <div
       style={{
@@ -47,14 +68,14 @@ export default function Home() {
             onClick={() => (window.location.href = "/login")}
           />
           <Btn type={"button"} text={"新規登録"} onClick={handleClick} />
-          <p style={{ fontFamily: "JPFont", marginBottom:"-20px", marginTop: "40px" }}>
+          <p style={{ fontFamily: "JPFont", marginBottom: "-20px", marginTop: "40px" }}>
             以下のアカウントで続行
           </p>
           <Btn
             text={"Google"}
             type={"button"}
             iconSrc={googleIcon}
-            onClick={() => (window.location.href = "/login")}
+            onClick={loginGoogle}
           />
         </div>
       </main>
