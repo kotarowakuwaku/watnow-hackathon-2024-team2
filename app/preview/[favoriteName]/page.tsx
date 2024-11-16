@@ -7,7 +7,6 @@ import Image from "next/image";
 import Btn from "@/app/components/Button";
 import { Checkbox, FormControlLabel, FormControl } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { CSSProperties } from "react";
 import styles from "./page.module.css";
 
 // スタイル付きチェックボックス

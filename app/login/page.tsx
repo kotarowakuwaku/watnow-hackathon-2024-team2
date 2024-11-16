@@ -180,6 +180,7 @@ const NewRegistration = () => {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              justifySelf: "center",
             }}
             onSubmit={handleSubmit(onSubmit)}
           >

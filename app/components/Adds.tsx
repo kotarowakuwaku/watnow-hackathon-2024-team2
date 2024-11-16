@@ -46,7 +46,7 @@ const ResponsiveButton = () => {
         src={buttonImage}
         alt="Responsive Button"
         style={{
-          width: "100%",
+          // width: "100%",
           marginTop: buttonImage=== Sbutton.src ? "0px" : "30px",
           width: buttonImage === Sbutton.src ? "84px" : isLargeScreen ? "360px" : "300px",
 

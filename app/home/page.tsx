@@ -9,10 +9,6 @@ import Typography from "@mui/material/Typography";
 //import { styled } from "@mui/material/styles";
 
 import styles from "./page.module.css"; // CSSモジュールのインポート
-
-import add from "../images/button.png";
-import Image from "next/image";
-import { useRouter } from "next/navigation"; // この行を追加
 import Adds from "../components/Adds";
 
 const Home = () => {
