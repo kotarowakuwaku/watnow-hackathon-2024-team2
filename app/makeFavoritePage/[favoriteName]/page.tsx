@@ -58,7 +58,7 @@ interface submitItem {
     order_index?: number;
 }
 
-export const buttonStyles: { [key: string]: (isOpen: boolean) => CSSProperties } = {
+const buttonStyles: { [key: string]: (isOpen: boolean) => CSSProperties } = {
     button: (isOpen: boolean) => ({
         position: 'absolute',
         bottom: isOpen ? '210px' : '20px',
@@ -102,7 +102,7 @@ export const buttonStyles: { [key: string]: (isOpen: boolean) => CSSProperties }
     }),
 }
 
-export const styles: { [key: string]: CSSProperties } = {
+const styles: { [key: string]: CSSProperties } = {
     container: {
         position: 'relative',
         height: "100vh",
