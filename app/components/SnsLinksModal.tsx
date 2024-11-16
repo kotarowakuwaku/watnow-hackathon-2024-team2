@@ -22,12 +22,12 @@ const styles: { [key: string]: CSSProperties } = {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        backgroundColor: 'white',
         borderRadius: '10px',
+        backgroundColor: '#969696',
         boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
         padding: '20px',
         zIndex: 20,
-        width: '300px',
+        width: '320px',
     },
     snsContainer: {
         display: 'flex',
@@ -46,7 +46,7 @@ const styles: { [key: string]: CSSProperties } = {
         cursor: 'pointer',
     },
     icon: {
-        opacity: 0.2, // 半透明のデフォルト
+        opacity: 0.3, // 半透明のデフォルト
         transition: 'opacity 0.3s',
     },
     iconSelected: {
@@ -120,7 +120,7 @@ const SnsLinksModal = ({ snsLinks, setSnsLinks, closeModal }: SnsLinksModalProps
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
                 <button onClick={closeModal} style={{ marginRight: 'auto' }}>閉じる</button>
-                <button onClick={handleConfirm} style={{ marginLeft: 'auto' }}>決定</button>
+                <button onClick={handleConfirm} style={{ marginLeft: 'auto', color: "white" }}>決定</button>
             </div>
         </div>
     );
