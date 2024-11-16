@@ -198,7 +198,7 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
         const userEmail = localStorage.getItem("userEmail");
         const selectedItems = Object.keys(checkedItems).filter((key) => checkedItems[key]);
         if (userEmail) {
-            const submitData = { email: userEmail, oshi_name: getData.oshi_name, genre:selectedItems[0] };
+            const submitData = { email: userEmail, oshi_name: getData.oshi_name, genre: selectedItems[0] };
             setSubmitting(true);
             await setFavorite(submitData);
         } else {
@@ -299,16 +299,16 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
                         <div style={styles.titleContainer}>
                             <h1 style={styles.title}>{getData.oshi_name}</h1>
                         </div>
-                        {getData.profession !== "Profession not found" &&(
-                        <div style={styles.titleContainer}>
-                            <h2 style={styles.genre}>{getData.profession}</h2>
-                        </div>
+                        {getData.profession !== "Profession not found" && (
+                            <div style={styles.titleContainer}>
+                                <h2 style={styles.genre}>{getData.profession}</h2>
+                            </div>
                         )}
                         <img src={getData.image_url} alt={getData.oshi_name} style={styles.image} />
-                        {getData.summary !== "Summary not found" &&(
-                        <div style={styles.descriptionContainer}>
-                            <p style={styles.description}>{getData.summary}</p>
-                        </div>
+                        {getData.summary !== "Summary not found" && (
+                            <div style={styles.descriptionContainer}>
+                                <p style={styles.description}>{getData.summary}</p>
+                            </div>
                         )}
                         <div style={styles.titleContainer}>
                             <p style={styles.officialLinkLabel}>officialサイト</p>

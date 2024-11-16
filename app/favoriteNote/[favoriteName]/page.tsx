@@ -23,8 +23,8 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
         const fetchFavorite = async () => {
             const userEmail = localStorage.getItem('userEmail');
             if (userEmail) {
-            await getFavorite({ oshi_name: decodedFavoriteName, email: userEmail });
-            }else{
+                await getFavorite({ oshi_name: decodedFavoriteName, email: userEmail });
+            } else {
                 console.log("email is not found");
             }
         };
@@ -45,7 +45,7 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
                 },
                 body: JSON.stringify({
                     oshi_name: data.oshi_name,
-                    email:data.email
+                    email: data.email
                 }),
             });
 

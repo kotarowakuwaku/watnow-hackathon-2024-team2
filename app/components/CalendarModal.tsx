@@ -35,7 +35,7 @@ const CalendarModal = ({ setEvents, closeModal }: CalendarModalProps) => {
 
     const handleAddEvent = () => {
         if (title && start) {
-            const newEvent = { title, start, end: end || undefined };
+            const newEvent = { title, start, end: end || start };
             setEvents(newEvent); // newEvent を正しく渡す
             closeModal();
         }

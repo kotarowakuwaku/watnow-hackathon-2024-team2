@@ -24,7 +24,8 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import jaLocale from '@fullcalendar/core/locales/ja';
 import SnsLinksModal from "@/app/components/SnsLinksModal";
-import { InsertChart } from "@mui/icons-material";
+import { Co2Sharp, InsertChart } from "@mui/icons-material";
+import { supabase } from "@/app/utils/supabase/supabase";
 
 export const styles = {
     container: {
@@ -103,7 +104,6 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
 
     const [snsLinks, setSnsLinks] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [submitData, setSubmitData] = useState([]);
 
     useEffect(() => {
         setIsLoading(true);
@@ -166,54 +166,119 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
             }
 
         } else if (label === '') {
-            insertedItems.map((item: any) => {
-                if (item.type === 'text') {
-                    setSubmitData([
-                        ...submitData,
-                        {
-                            type: item.type,
-                            text: item.text,
-                            fontSize: item.fontSize,
-                            alignment: item.alignment,
-                            order_index: insertedItems.indexOf(item),
-                        }
-                    ]);
-                } else if (item.type === 'image') {
-                    setSubmitData([
-                        ...submitData,
-                        {
-                            type: item.type,
-                            src: item.src,
-                            size: item.size,
-                            order_index: insertedItems.indexOf(item),
-                        }
-                    ]);
-                } else if (item.type === 'event') {
-                    setSubmitData([
-                        ...submitData,
-                        {
-                            type: item.type,
-                            title: item.title,
-                            start: item.start,
-                            end: item.end,
-                            order_index: insertedItems.indexOf(item),
-                        }
-                    ]);
-                } else if (item.type === 'sns') {
-                    setSubmitData([
-                        ...submitData,
-                        {
-                            type: item.type,
-                            snsLinks: item.snsLinks,
-                            order_index: insertedItems.indexOf(item),
-                        }
-                    ]);
-                }
-            });
-            console.log(submitData);  
+            onSubmit(insertedItems);
         }
         else {
             setActiveModal(label);
+        }
+    };
+
+    const onSubmit = async (data) => {
+        setIsLoading(true);
+        const newSubmitData = [];
+        const imageUrl = [];
+
+        for (const item of data) {
+            if (item.type === 'image') {
+                const base64Data = item.src.split(',')[1];
+                const blob = new Blob([Uint8Array.from(atob(base64Data), (c) => c.charCodeAt(0))], {
+                    type: 'image/jpeg',
+                });
+
+                const fileName = `uploads/${Date.now()}.jpg`;
+                const { error: uploadError } = await supabase.storage
+                    .from('oshiNote_images')
+                    .upload(fileName, blob, {
+                        cacheControl: '3600',
+                        upsert: false,
+                    });
+
+                if (uploadError) {
+                    console.error('Error uploading file: ', uploadError.message);
+                    window.alert(uploadError.message);
+                    setIsLoading(false);
+                    return;
+                }
+
+                const { data: publicImageUrlData } = await supabase.storage
+                    .from('oshiNote_images')
+                    .getPublicUrl(fileName);
+
+                imageUrl.push({ [data.indexOf(item)]: publicImageUrlData.publicUrl });
+            }
+        }
+        data.forEach((item: any) => {
+            if (item.type === 'text') {
+                newSubmitData.push({
+                    type: item.type,
+                    text: item.text,
+                    fontSize: item.fontSize,
+                    alignment: item.alignment,
+                    order_index: data.indexOf(item),
+                });
+            } else if (item.type === 'image') {
+                newSubmitData.push({
+                    type: item.type,
+                    src: imageUrl.find((key) => Object.keys(key)[0] == data.indexOf(item))?.[data.indexOf(item)] || null,
+                    size: item.size,
+                    order_index: data.indexOf(item),
+                });
+            } else if (item.type === 'event') {
+                newSubmitData.push({
+                    type: item.type,
+                    title: item.title,
+                    start_date: item.start,
+                    end_date: item.end,
+                    order_index: data.indexOf(item),
+                });
+            } else if (item.type === 'sns') {
+                newSubmitData.push({
+                    type: item.type,
+                    snsLinks: item.snsLinks,
+                    order_index: data.indexOf(item),
+                });
+            }
+        });
+
+        const decodedFavoriteName = decodeURIComponent(params.favoriteName);
+        const userEmail = localStorage.getItem('userEmail');
+        console.log(newSubmitData);
+        if (userEmail && decodedFavoriteName && newSubmitData) {
+            await submitFavorite({ oshi_name: decodedFavoriteName, email: userEmail, content: newSubmitData });
+        } else {
+            console.log("email is not found");
+        }
+    }
+
+    const submitFavorite = async (data:
+        {
+            oshi_name: string;
+            email: string;
+            content: string[];
+        }
+    ) => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/content/create-content`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    oshi_name: data.oshi_name,
+                    email: data.email,
+                    content: data.content,
+                }),
+            });
+
+            if (response.ok) {
+                console.log(response);
+            } else {
+                console.error('Failed to fetch');
+            }
+        } catch (error) {
+            console.error('Error fetching genres:', error);
+        } finally {
+            setIsLoading(false); // データ取得後にローディングを終了
         }
     };
 
