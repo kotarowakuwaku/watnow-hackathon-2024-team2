@@ -5,7 +5,7 @@ import xIcon from "../../images/x.png"; // Ensure this path is correct
 import spotifyIcon from "../../images/spotify.png"; // Ensure this path is correct
 import Image from "next/image";
 import Btn from "@/app/components/Button";
-// import styles from "./page.module.css"; // CSSモジュールのインポート
+import styles from "./page.module.css"; // CSSモジュールのインポート
 
 const Preview = ({ params }: { params: { favoriteName: string } }) => {
   const [getData, setGetData] = useState({
