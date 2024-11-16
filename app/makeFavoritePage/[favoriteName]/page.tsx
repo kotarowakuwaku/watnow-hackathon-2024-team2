@@ -26,13 +26,11 @@ import jaLocale from '@fullcalendar/core/locales/ja';
 import SnsLinksModal from "@/app/components/SnsLinksModal";
 import { supabase } from "@/app/utils/supabase/supabase";
 import Button from "@/app/components/Button";
+import { CSSProperties } from 'react';
+import { count } from "console";
 
-export const styles = {
-    container: {
-        position: 'relative',
-        height: "100vh",
-    },
-    button: (isOpen) => ({
+export const buttonStyles: { [key: string]: (isOpen: boolean) => CSSProperties } = {
+    button: (isOpen: boolean) => ({
         position: 'absolute',
         bottom: isOpen ? '210px' : '20px',
         right: '20px',
@@ -51,7 +49,7 @@ export const styles = {
         transition: 'bottom 0.3s ease',
         zIndex: 13,
     }),
-    tabContainer: (isOpen) => ({
+    tabContainer: (isOpen: boolean) => ({
         position: 'absolute',
         width: "80%",
         bottom: '30px',
@@ -67,6 +65,19 @@ export const styles = {
         opacity: isOpen ? 1 : 0,
         transition: 'opacity 0.3s ease',
     }),
+    alignmentButton: (isActive: boolean) => ({
+        border: 'none',
+        background: isActive ? '#969696' : 'transparent',
+        color: isActive ? '#fff' : 'black',
+        cursor: 'pointer',
+    }),
+}
+
+export const styles: { [key: string]: CSSProperties } = {
+    container: {
+        position: 'relative',
+        height: "100vh",
+    },
     iconContainer: {
         display: 'flex',
         flexDirection: 'column',
@@ -77,12 +88,6 @@ export const styles = {
         marginTop: '8px',
         fontSize: "0.625rem",
     },
-    alignmentButton: (isActive) => ({
-        border: 'none',
-        background: isActive ? '#969696' : 'transparent',
-        color: isActive ? '#fff' : 'black',
-        cursor: 'pointer',
-    }),
     snsContainer: {
         width: "80%",
         display: 'flex',
@@ -114,14 +119,14 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [text, setText] = useState('');
     const [fontSize, setFontSize] = useState(16);
-    const [alignment, setAlignment] = useState('left');
-    const [activeModal, setActiveModal] = useState(null);
-    const [insertedItems, setInsertedItems] = useState([]);
-    const [uploadedImage, setUploadedImage] = useState(null);
+    const [alignment, setAlignment] = useState<'left' | 'center' | 'right'>('left');
+    const [activeModal, setActiveModal] = useState<string | null>(null);
+    const [insertedItems, setInsertedItems] = useState<{ type: string;[key: string]: any }[]>([]);
+    const [uploadedImage, setUploadedImage] = useState<string>('');
     const [imageSize, setImageSize] = useState(100);
-    const [events, setEvents] = useState([]); // State for calendar events
+    const [events, setEvents] = useState<{ title: string; start: string; end: string }[]>([]); // State for calendar events
 
-    const [snsLinks, setSnsLinks] = useState([]);
+    const [snsLinks, setSnsLinks] = useState<{ name: string; url: string | null }[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -155,7 +160,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
                     ...prevLinks,
                     ...Object.entries(responseData.sns_links)
                         .filter(([name, url]) => url !== null && !prevLinks.some((link) => link.name === name))
-                        .map(([name, url]) => ({ name, url }))
+                        .map(([name, url]) => ({ name, url: url as string | null }))
                 ]);
             }
 
@@ -172,7 +177,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
         setIsOpen(!isOpen);
     };
 
-    const handleIconClick = (label) => {
+    const handleIconClick = (label: string) => {
         if (label === '元に戻す') {
             if (insertedItems[insertedItems.length - 1].type === 'event') {
                 if (events.length === 0) {
@@ -189,10 +194,10 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
         }
     };
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (data: { type: string;[key: string]: any }[]) => {
         setIsLoading(true);
-        const newSubmitData = [];
-        const imageUrl = [];
+        const newSubmitData: { type: string;[key: string]: any }[] = [];
+        const imageUrl: { [key: number]: string }[] = [];
 
         for (const item of data) {
             if (item.type === 'image') {
@@ -235,7 +240,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
             } else if (item.type === 'image') {
                 newSubmitData.push({
                     type: item.type,
-                    src: imageUrl.find((key) => Object.keys(key)[0] == data.indexOf(item))?.[data.indexOf(item)] || null,
+                    src: imageUrl.find((key) => Number(Object.keys(key)[0]) === data.indexOf(item))?.[data.indexOf(item)] || null,
                     size: item.size,
                     order_index: data.indexOf(item),
                 });
@@ -246,6 +251,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
                     start_date: item.start,
                     end_date: item.end,
                     order_index: data.indexOf(item),
+                    count: item.count,
                 });
             } else if (item.type === 'sns') {
                 newSubmitData.push({
@@ -269,7 +275,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
         {
             oshi_name: string;
             email: string;
-            content: string[];
+            content: { [key: string]: any; type: string; }[];
         }
     ) => {
         try {
@@ -299,7 +305,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
 
     const closeModal = () => {
         setActiveModal(null);
-        setUploadedImage(null);
+        setUploadedImage('');
     };
 
     const handleText = () => {
@@ -316,7 +322,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
         closeModal();
     };
 
-    const handleAddSnsLinks = (newSnsLinks) => {
+    const handleAddSnsLinks = (newSnsLinks: { name: string; url: string | null }[]) => {
         if (newSnsLinks.length !== 0) {
             const snsData = {
                 type: 'sns',
@@ -340,19 +346,16 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
     };
 
 
-    const handleAddEvent = (newEvent) => {
+    const handleAddEvent = (newEvent: { title: string; start: string; end: string }) => {
         const eventData = {
             type: 'event',
             title: newEvent.title,
             start: newEvent.start,
             end: newEvent.end,
+            count: events.length,
         };
-        if (insertedItems.some((item) => item.type !== 'event') || insertedItems.length === 0) {
-            setEvents((prevEvents) => [...prevEvents, newEvent]);
-            setInsertedItems([...insertedItems, eventData]); // eventsも挿入
-        } else {
-            setEvents((prevEvents) => [...prevEvents, newEvent]);
-        }
+        setEvents((prevEvents) => [...prevEvents, newEvent]);
+        setInsertedItems([...insertedItems, eventData]); // eventsも挿入
         closeModal();
     };
 
@@ -374,7 +377,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
                     return (
                         <img key={index} src={item.src} alt={`uploaded-${index}`} style={{ width: `${item.size}%`, height: 'auto' }} />
                     );
-                } else if (item.type === 'event') {
+                } else if (item.type === 'event' && item.count === 0) {
                     return (
                         <div key={index} style={{
                             width: '90%',
@@ -403,9 +406,9 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
                 } else if (item.type === 'sns') {
                     return (
                         <div key={index} style={styles.snsContainer}>
-                            {item.snsLinks.map((snsLink) => (
+                            {item.snsLinks.map((snsLink: { name: string; url: string | null }) => (
                                 <div key={snsLink.name}>
-                                    <a href={snsLink.url} target="_blank" rel="noopener noreferrer">
+                                    <a ref={snsLink.url} target="_blank" rel="noopener noreferrer">
                                         <Image
                                             src={
                                                 snsLink.name === "youtube" ? "https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" :
@@ -430,12 +433,12 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
                 return null;
             })}
 
-            <button onClick={handleToggle} style={styles.button(isOpen)}>
+            <button onClick={handleToggle} style={buttonStyles.button(isOpen)}>
                 <Image src={penIcon} alt="pen" />
             </button>
 
             {isOpen && (
-                <div style={styles.tabContainer(isOpen)}>
+                <div style={buttonStyles.tabContainer(isOpen)}>
                     {[
                         { src: icon1, label: 'テキスト' },
                         { src: icon2, label: 'カレンダー' },
@@ -495,7 +498,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
 
             {activeModal === 'リンク' && (
                 <SnsLinksModal
-                    snsLinks={snsLinks}
+                    snsLinks={snsLinks.filter(link => link.url !== null) as { name: string; url: string }[]}
                     setSnsLinks={handleAddSnsLinks}
                     closeModal={closeModal}
                 />

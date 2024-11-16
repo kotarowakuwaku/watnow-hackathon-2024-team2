@@ -167,7 +167,7 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
 
             if (response.ok) {
                 const responseData = await response.json();
-                setGenles(responseData);
+                setGenles(responseData.genres);
                 setSubmitted(true);
             } else {
                 console.error('Failed to fetch genres');

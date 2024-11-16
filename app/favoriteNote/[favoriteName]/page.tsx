@@ -14,7 +14,21 @@ import jaLocale from '@fullcalendar/core/locales/ja';
 import Button from '@/app/components/Button';
 
 const Preview = ({ params }: { params: { favoriteName: string } }) => {
-    const [getData, setGetData] = useState([]);
+    interface ContentItem {
+        type: 'text' | 'image' | 'event' | 'sns';
+        text?: string;
+        alignment?: string;
+        fontSize?: number;
+        src?: string;
+        size?: number;
+        snsLinks?: { name: string; url: string }[];
+        title?: string;
+        start_date?: string;
+        end_date?: string;
+        count?: number;
+    }
+    
+    const [getData, setGetData] = useState<ContentItem[]>([]);
     const [isLoading, setIsLoading] = useState(true); // ローディングステート
     const [events, setEvents] = useState<{ title: string; start: string; end: string }[]>([]);
 
@@ -53,11 +67,9 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
             if (response.ok) {
                 const responseData = await response.json();
                 // order_index に基づいて並べ替え
-                const sortedContent = responseData.content.sort((a, b) => a.order_index - b.order_index);
-                console.log(responseData.content);
-                console.log(sortedContent);
+                const sortedContent = responseData.content.sort((a: { order_index: number }, b: { order_index: number }) => a.order_index - b.order_index);
                 setGetData(sortedContent); // 並び替えたデータをセット
-                responseData.content.map((item) => {
+                responseData.content.map((item: { type: string; title: string; start_date: string; end_date: string }) => {
                     if (item.type === 'event') {
                         setEvents((prevEvents) => {
                             if (!prevEvents.some(event => event.title === item.title)) {
@@ -82,7 +94,7 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
             position: 'relative',
             height: "100vh",
         },
-        button: (isOpen) => ({
+        button: (isOpen: boolean) => ({
             position: 'absolute',
             bottom: isOpen ? '210px' : '20px',
             right: '20px',
@@ -101,7 +113,7 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
             transition: 'bottom 0.3s ease',
             zIndex: 13,
         }),
-        tabContainer: (isOpen) => ({
+        tabContainer: (isOpen: boolean) => ({
             position: 'absolute',
             width: "80%",
             bottom: '30px',
@@ -127,7 +139,7 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
             marginTop: '8px',
             fontSize: "0.625rem",
         },
-        alignmentButton: (isActive) => ({
+        alignmentButton: (isActive: boolean) => ({
             border: 'none',
             background: isActive ? '#969696' : 'transparent',
             color: isActive ? '#fff' : 'black',
@@ -146,11 +158,11 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
     }
 
     return (
-        <div style={styles.container}>
+        <div style={styles.container as React.CSSProperties}>
             {getData.map((item, index) => {
                 if (item.type === 'text') {
                     return (
-                        <div key={index} style={{ textAlign: item.alignment, fontSize: item.fontSize ? `${item.fontSize}px` : undefined }}>
+                        <div key={index} style={{ textAlign: item.alignment as React.CSSProperties['textAlign'], fontSize: item.fontSize ? `${item.fontSize}px` : undefined }}>
                             {item.text}
                         </div>
                     );
@@ -158,7 +170,7 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
                     return (
                         <img key={index} src={item.src} alt={`uploaded-${index}`} style={{ width: `${item.size}%`, height: 'auto' }} />
                     );
-                } else if (item.type === 'event') {
+                } else if (item.type === 'event' && item.count === 0) {
                     return (
                         <div key={index} style={{
                             width: '90%',
@@ -186,8 +198,8 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
                     );
                 } else if (item.type === 'sns') {
                     return (
-                        <div key={index} style={styles.snsContainer}>
-                            {item.snsLinks.map((snsLink) => (
+                        <div key={index} style={styles.snsContainer as React.CSSProperties}>
+                            {item.snsLinks && item.snsLinks.map((snsLink) => (
                                 <div key={snsLink.name}>
                                     <a href={snsLink.url} target="_blank" rel="noopener noreferrer">
                                         <Image

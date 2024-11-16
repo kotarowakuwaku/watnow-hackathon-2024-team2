@@ -1,4 +1,5 @@
 import React from 'react';
+import { CSSProperties } from 'react';
 
 type MediaModalProps = {
     uploadedImage: string;
@@ -9,7 +10,7 @@ type MediaModalProps = {
     handleComplete: () => void;
 };
 
-const styles = {
+const styles: { [key: string]: CSSProperties } = {
     modal: {
         position: 'fixed',
         top: '50%',
@@ -42,12 +43,15 @@ const styles = {
 const MediaModal = ({ uploadedImage, setUploadedImage, imageSize, setImageSize, closeModal, handleComplete }:
     MediaModalProps
 ) => {
-    const handleImageUpload = (e) => {
-        const file = e.target.files[0];
-        if (file) {
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (files && files[0]) {
+            const file = files[0];
             const reader = new FileReader();
             reader.onloadend = () => {
-                setUploadedImage(reader.result);
+                if (typeof reader.result === 'string') {
+                    setUploadedImage(reader.result);
+                }
             };
             reader.readAsDataURL(file);
         }
@@ -77,7 +81,7 @@ const MediaModal = ({ uploadedImage, setUploadedImage, imageSize, setImageSize, 
                         min="50"
                         max="200"
                         value={imageSize}
-                        onChange={(e) => setImageSize(e.target.value)}
+                        onChange={(e) => setImageSize(Number(e.target.value))}
                         style={styles.slider}
                     />
                 </div>

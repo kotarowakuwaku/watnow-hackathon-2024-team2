@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
+import { CSSProperties } from 'react';
 
 type CalendarModalProps = {
-    setEvents: (events: { title: string; start: string; end?: string }[]) => void;
+    setEvents: (events: { title: string; start: string; end: string }) => void;
     closeModal: () => void;
 };
 
-const styles = {
+
+const styles: { [key: string]: CSSProperties } = {
     modal: {
         position: 'fixed',
         top: '50%',

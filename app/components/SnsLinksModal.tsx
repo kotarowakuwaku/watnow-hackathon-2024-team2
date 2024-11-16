@@ -4,7 +4,7 @@ import spotifyIcon from "../images/spotify.png";
 import facebookIcon from "../images/facebook.png";
 import appleMusicIcon from "../images/Apple_Music_icon.png";
 import soundCloud from "../images/soundcloud.png";
-
+import { CSSProperties } from 'react';
 import Image from 'next/image';
 
 type SnsLinksModalProps = {
@@ -12,11 +12,11 @@ type SnsLinksModalProps = {
         name: string;
         url: string;
     }[];
-    setSnsLinks: (checkedLinks: string[]) => void;
+    setSnsLinks: (checkedLinks: { name: string; url: string }[]) => void;
     closeModal: () => void;
 };
 
-const styles = {
+const styles: { [key: string]: CSSProperties } = {
     modal: {
         position: 'fixed',
         top: '50%',
@@ -56,7 +56,7 @@ const styles = {
 
 const SnsLinksModal = ({ snsLinks, setSnsLinks, closeModal }: SnsLinksModalProps) => {
     const [checkedLinks, setCheckedLinks] = useState<string[]>([]);
-    const [selectedSns, setSelectedSns] = useState<string[]>([]);
+    const [selectedSns, setSelectedSns] = useState<{ name: string; url: string }[]>([]);
 
     const handleCheckboxChange = (name: string, url:string) => {
         setCheckedLinks(prevSelected => {

@@ -37,7 +37,7 @@ const styles = {
         width: '100%',
         marginBottom: '10px',
     },
-    alignmentButton: (isActive) => ({
+    alignmentButton: (isActive: boolean) => ({
         border: 'none',
         background: isActive ? '#969696' : 'transparent',
         color: isActive ? '#fff' : 'black',
@@ -45,11 +45,14 @@ const styles = {
     }),
 };
 
-const TextModal = ({ text, setText, fontSize, setFontSize, alignment, setAlignment, closeModal, handleText }:
-    TextModalProps
-) => {
+const TextModal = ({ text, setText, fontSize, setFontSize, alignment, setAlignment, closeModal, handleText }: TextModalProps) => {
+    const handleFontSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        // input[type="range"] の値を数値に変換して setFontSize に渡す
+        setFontSize(Number(e.target.value));
+    };
+
     return (
-        <div style={styles.modal}>
+        <div style={styles.modal as React.CSSProperties}>
             <input
                 type="text"
                 style={{ ...styles.input, fontSize: `${fontSize}px` }}
@@ -63,7 +66,7 @@ const TextModal = ({ text, setText, fontSize, setFontSize, alignment, setAlignme
                 min="10"
                 max="40"
                 value={fontSize}
-                onChange={(e) => setFontSize(e.target.value)}
+                onChange={handleFontSizeChange}
             />
             <div style={{ display: 'flex', gap: '10px', border: '1px solid #ccc', padding: '5px', borderRadius: '5px', justifyContent: "space-between" }}>
                 <button onClick={() => setAlignment('left')} style={styles.alignmentButton(alignment === 'left')}>
