@@ -50,17 +50,17 @@ export default function Header() {
                 height: "40px",
                 borderRadius: "20px",
                 backgroundColor: "#FCFCFA",
-                "&.Mui-selected": {
-                  backgroundColor: "lightblue", // 選択時の背景色
-                  color: "white", // 選択時のテキスト色
-                },
-                "&.Mui-selected:hover": {
-                  backgroundColor: "#D3DCF9", // 選択時のホバー時の背景色
-                },
-                "&:active": {
-                  backgroundColor: "#FDEFFE", // 押されたときの背景色
-                  color: "#F0F8FE", // 押されたときのテキスト色
-                },
+                // "&.Mui-selected": {
+                //   backgroundColor: "lightblue", // 選択時の背景色
+                //   color: "white", // 選択時のテキスト色
+                // },
+                // "&.Mui-selected:hover": {
+                //   backgroundColor: "#D3DCF9", // 選択時のホバー時の背景色
+                // },
+                // "&:active": {
+                //   backgroundColor: "#FDEFFE", // 押されたときの背景色
+                //   color: "#F0F8FE", // 押されたときのテキスト色
+                // },
               }}
             >
               ホーム

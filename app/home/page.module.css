@@ -12,6 +12,23 @@
   border-radius: 10px;
 }
 
+.oshinoko{
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 20px;
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px rgba(186, 188, 211, 1);
+  cursor: pointer;
+  transition: background-color 3.0s ease;
+  margin: 10px 10px;
+  animation: name duration timing-function delay iteration-count direction fill-mode;
+  animation: fadeInFromBottom 0.8s ease-out;
+}
+
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -20,6 +37,18 @@
     transform: rotate(360deg);
   }
 }
+
+@keyframes fadeInFromBottom {
+  from {
+    transform: translateY(50px); /* 下に50pxの位置から */
+    opacity: 0; /* 完全に透明 */
+  }
+  to {
+    transform: translateY(0); /* 元の位置 */
+    opacity: 1; /* 完全に表示 */
+  }
+}
+
 
 @keyframes change-color {
   0% {

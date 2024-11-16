@@ -300,12 +300,13 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
       {isLoading ? (
         <div
           style={{
-            backgroundColor: "#888999",
+            backgroundColor: "#F5F5F5",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            height: "800px",
+            height: "100%",
+            width: "100%",
           }}
         >
           <div className={styles.loadingDonut}></div>{" "}

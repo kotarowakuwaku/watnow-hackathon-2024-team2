@@ -12,7 +12,7 @@ export default function Header() {
       <AppBar
         position="static"
         sx={{
-          backgroundColor: "#F5F5F5",
+          backgroundColor: "#888999",
           color: "black",
           boxShadow: "-moz-initial",
           height: "140px",//wwwwwww
@@ -40,7 +40,7 @@ export default function Header() {
               fontWeight: "bold",
               marginLeft: "30px",
               marginBottom: "10px",
-              color: "#5D4C72",
+              color: "#FFFF",
             }}
           >
             推しリスト
