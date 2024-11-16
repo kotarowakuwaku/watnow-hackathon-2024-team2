@@ -28,14 +28,14 @@ const ResponsiveButton = () => {
         paddingBottom: isLargeScreen ? "40px" : "10px",
         position: "fixed",
         bottom: "0",       // 画面の下部に配置
-        left: "50%",       // 画面の中央に配置（水平）
-        transform: isLargeScreen ? "translateX(10%)" : "translateX(-50%)",  // 水平中央揃え
+        left: "0%",       // 画面の中央に配置（水平）
+        //transform: isLargeScreen ? "translateX(10%)" : "translateX(-50%)",  // 水平中央揃え
         zIndex: 1000,      // 他の要素より前面に表示
         backdropFilter: "blur(0.5px)",  // 背景をぼやけさせる
-        //width: "100%",
+        width: "100%",
         display: "flex",
-        marginRight: "20px",
-        justifyContent: buttonImage === Sbutton.src ? "center" : isLargeScreen ? "flex-end" : "center",
+        marginRight: "0px",
+        justifyContent: "center",
        // paddingRight: isLargeScreen ? "80px" : "0px",
         alignItems: "center",
         cursor: "pointer",  // ��ウスカー��ルをボタンに合わせる
