@@ -144,7 +144,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
             console.error('Error fetching genres:', error);
             setIsLoading(false);
         } finally {
-            // setIsLoading(false); 
+            setIsLoading(false); 
         }
     };
 
@@ -270,7 +270,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
             });
 
             if (response.ok) {
-                console.log(response);
+                window.location.href = "/home";
             } else {
                 console.error('Failed to fetch');
             }

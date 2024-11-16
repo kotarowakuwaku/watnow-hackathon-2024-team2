@@ -142,7 +142,7 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
         });
 
         if (response.ok) {
-            window.location.href = "/home";
+            window.location.href = `/makeFavoritePage/${data.oshi_name}`;
         } else {
             setSubmitting(false);
             console.error('Registration failed');
@@ -168,7 +168,6 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
             if (response.ok) {
                 const responseData = await response.json();
                 setGenles(responseData);
-                console.log(responseData);
                 setSubmitted(true);
             } else {
                 console.error('Failed to fetch genres');
@@ -374,7 +373,7 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
                                 marginTop: "40px",
                             }}>
 
-                                <Btn type={"button"} text={"ノートを作成"} onClick={handleSubmit} />
+                                <Btn type={"button"} text={"推しノート作成へ"} onClick={handleSubmit} />
                             </div>
                         </FormControl>
                     </>
