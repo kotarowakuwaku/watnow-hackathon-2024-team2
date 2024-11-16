@@ -4,7 +4,7 @@ import xIcon from "../../images/x.png";
 import spotifyIcon from "../../images/spotify.png";
 import facebookIcon from "../../images/facebook.png";
 import appleMusicIcon from "../../images/Apple_Music_icon.png";
-import soundCloud from "../../images/soundcloud.png";
+import soundCloud from "../../images/soundCloud.png";
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import penIcon from '../../images/pen.png';

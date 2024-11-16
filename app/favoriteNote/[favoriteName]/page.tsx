@@ -6,7 +6,7 @@ import spotifyIcon from "../../images/spotify.png"; // Ensure this path is corre
 import Image from 'next/image';
 import facebookIcon from "../../images/facebook.png";
 import appleMusicIcon from "../../images/Apple_Music_icon.png";
-import soundCloud from "../../images/soundcloud.png";
+import soundCloud from "../../images/soundCloud.png";
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
