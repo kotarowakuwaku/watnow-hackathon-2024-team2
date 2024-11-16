@@ -7,16 +7,16 @@ import Btn from "../components/Button"; // コンポーネントのパスを修�
 import pen from "../images/reg1.png";
 import mail from "../images/reg2.png";
 import key from "../images/reg3.png";
-import { CSSProperties } from 'react';
+import { CSSProperties } from "react";
 
 const styles: { [key: string]: CSSProperties } = {
   container: {
     fontFamily: "JPFont",
-    width: "328px",
+    width: "100%",
     display: "flex",
     flexDirection: "column",
     padding: "0px",
-    maxWidth: "400px",
+    maxWidth: "500px",
     margin: "32px",
     border: "1px solid #000",
     borderRadius: "20px",
@@ -32,16 +32,19 @@ const styles: { [key: string]: CSSProperties } = {
 
   h1: {
     fontFamily: "JPFont",
-    marginLeft: "32px",
-    marginTop: "165px",
+    marginTop: "100px",
     fontSize: "32px",
     fontWeight: "bold",
+    display: "flex",
+    justifyContent: "center",
   },
   h2: {
-    marginLeft: "32px",
+    marginRight: "0%",
     fontFamily: "JPFont",
-    marginBottom: "10px",
+    marginTop: "10px",
     fontSize: "24px",
+    justifyContent: "center",
+    display: "flex",
   },
   label: {
     backgroundColor: "#E6E6E6",
@@ -95,41 +98,48 @@ const NewRegistration = () => {
     password: "",
   });
 
-    const onSubmit = async (data:
-        { name: string; email: string; password: string }
-    ) => {
-        setFormData(data); // データを更新
-        
-        // registerUserを呼び出してユーザーを登録
-        await registerUser(data);
-    };
+  const onSubmit = async (data: {
+    name: string;
+    email: string;
+    password: string;
+  }) => {
+    setFormData(data); // データを更新
 
-    const registerUser = async (data:
-        { name: string; email: string; password: string }
-    ) => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/register`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: data.email,
-                password: data.password,
-                username: data.name, // userNameを適切にマッピング
-            }),
-        });
-    
-        if (response.ok) {
-            const responseData = await response.json();
-            // localStorageにemailを保存
-            localStorage.setItem('userEmail', responseData.user.email);
-            setSubmitted(true); // フォーム送信時に状態を更新
-        } else {
-            console.error('Registration failed');
-            // エラーメッセージを表示するための状態管理を追加することも考慮
-            window.alert('登録に失敗しました');
-        }
-    };
+    // registerUserを呼び出してユーザーを登録
+    await registerUser(data);
+  };
+
+  const registerUser = async (data: {
+    name: string;
+    email: string;
+    password: string;
+  }) => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/user/register`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+          username: data.name, // userNameを適切にマッピング
+        }),
+      }
+    );
+
+    if (response.ok) {
+      const responseData = await response.json();
+      // localStorageにemailを保存
+      localStorage.setItem("userEmail", responseData.user.email);
+      setSubmitted(true); // フォーム送信時に状態を更新
+    } else {
+      console.error("Registration failed");
+      // エラーメッセージを表示するための状態管理を追加することも考慮
+      window.alert("登録に失敗しました");
+    }
+  };
   return (
     <div>
       {submitted ? (
@@ -138,17 +148,27 @@ const NewRegistration = () => {
             width: "100%",
             display: "flex",
             flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center"
           }}
         >
           <h1 style={styles.h1}>新規登録</h1>
           <h2 style={styles.h2}>登録が完了しました</h2>
-          <div style={styles.container}>
-            <div style={{ padding: "19px", margin: "10px" }}>
-              <p style={{ fontWeight: "bold", fontSize: "20px" ,marginBottom: '10px'}}>
-                {formData.name}さん
-              </p>
-              <p>ID: {formData.email}</p>
-              <p>パスワード: {formData.password}</p>
+          <div style={{display: "flex", alignItems: "center" ,width: "100%", justifyContent: "center"}}>
+            <div style={styles.container}>
+              <div style={{ padding: "19px", margin: "10px", }}>
+                <p
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: "20px",
+                    marginBottom: "10px",
+                  }}
+                >
+                  {formData.name}さん
+                </p>
+                <p>ID: {formData.email}</p>
+                <p>パスワード: {formData.password}</p>
+              </div>
             </div>
           </div>
           <div style={{ display: "flex", justifyContent: "center" }}>
@@ -169,6 +189,8 @@ const NewRegistration = () => {
               width: "100%",
               display: "flex",
               flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
             }}
             onSubmit={handleSubmit(onSubmit)}
           >
@@ -264,7 +286,7 @@ const NewRegistration = () => {
               width: "100%",
             }}
           >
-            <p style={{ fontFamily: "JPFont" }}>ログイン済みの方はこちら</p>
+            <p style={{ fontFamily: "JPFont", marginBottom:"-20px" }}>ログイン済みの方はこちら</p>
             <Btn
               type="button"
               text="ログインへ"

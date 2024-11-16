@@ -4,7 +4,27 @@
   border: 8px solid #94aee9; /* 初期色 */
   border-top: 8px solid transparent; /* 上部分は透明に */
   border-radius: 50%; /* 円形にする */
-  animation: spin 2s linear infinite, change-color 4s ease-in-out infinite; /* 回転と色変化のアニメーションをカンマで分ける */
+  animation: spin 2s linear infinite, change-color 4s ease-in-out infinite; /* 回転と色変化のアニメーション */
+}
+
+.add {
+  width: 300px;
+  border-radius: 10px; /* 角を丸くする */
+}
+
+.oshinoko {
+  height: 100px;
+  display: flex;
+  justify-content: center; /* 子要素を中央揃え */
+  align-items: center; /* 子要素を垂直方向に中央揃え */
+  padding-left: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px rgba(186, 188, 211, 1); /* ボックスの影を追加 */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* 背景色の変化をスムーズに */
+  margin: 10px 10px;
+  animation: fadeInFromBottom 0.8s ease-out; /* 下からのフェードインアニメーション */
 }
 
 @keyframes spin {
@@ -13,6 +33,17 @@
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeInFromBottom {
+  from {
+    transform: translateY(50px); /* 下に50pxの位置から */
+    opacity: 0; /* 完全に透明 */
+  }
+  to {
+    transform: translateY(0); /* 元の位置 */
+    opacity: 1; /* 完全に表示 */
   }
 }
 

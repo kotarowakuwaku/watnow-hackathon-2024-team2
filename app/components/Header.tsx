@@ -12,10 +12,11 @@ export default function Header() {
       <AppBar
         position="static"
         sx={{
-          backgroundColor: "#F5F5F5",
+          backgroundColor: "#888999",
           color: "black",
           boxShadow: "-moz-initial",
           height: "140px",//wwwwwww
+          borderRadius: "5px",
         }}
       >
         <Toolbar
@@ -32,17 +33,18 @@ export default function Header() {
             sx={{
               fontFamily: "JPFont",
               height: "100%",
+              fontSize: "34px",
               flexGrow: 4,
               display: "flex",
               //justifyContent: "center",
               alignItems: "flex-end",
               fontWeight: "bold",
-              marginLeft: "10px",
+              marginLeft: "30px",
               marginBottom: "10px",
-              color: "#5D4C72",
+              color: "#FFFF",
             }}
           >
-            推し一覧
+            推しリスト
           </Typography>
   
           <Box

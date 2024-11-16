@@ -4,7 +4,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { StaticImageData } from 'next/image';
 
-const baseWidth = 255;
+const baseWidth = 90;
 const theme = createTheme({
   components: {
     MuiButton: {

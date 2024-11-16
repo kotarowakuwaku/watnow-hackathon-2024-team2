@@ -195,7 +195,7 @@ const SelectFavorite = () => {
                 borderRadius: "inherit",
                 padding: "2px",
                 background:
-                  "conic-gradient(#EAC46A, #D5FCD5, #6C97EC, #0731FB, #7634DB, #FF44AA,#FF6E49,#FF8E03,#EAC463)", // 虹色ボーダー風の背景
+                "conic-gradient(#E0AAFF, #AA95EE, #E3ABF1, #6933C7, #1787EF, #66B2FA,#94CBFF,#E0AAFF)", // 虹色ボーダー風の背景
                 transition: "opacity 0.6s ease", // opacityに対して遷移を適用
                 WebkitMask:
                   "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)", // 背景色がボーダーになるようにする
@@ -209,5 +209,5 @@ const SelectFavorite = () => {
     </div>
   );
 };
-
+//                  "conic-gradient(#EAC46A, #D5FCD5, #6C97EC, #0731FB, #7634DB, #FF44AA,#FF6E49,#FF8E03,#EAC463)", // 虹色ボーダー風の背景
 export default SelectFavorite;

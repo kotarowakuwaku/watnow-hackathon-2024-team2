@@ -5,14 +5,11 @@ import Header from "../components/Header";
 //import ReactLoading from "react-loading";
 
 import Link from "next/link";
-import Toggle from "../components/Toggle";
 import Typography from "@mui/material/Typography";
 //import { styled } from "@mui/material/styles";
 
 import styles from "./page.module.css"; // CSSモジュールのインポート
-
-import add from "../images/button.png";
-import Image from "next/image";
+import Adds from "../components/Adds";
 
 const Home = () => {
   const [groupedData, setGroupedData] = useState<{
@@ -38,13 +35,16 @@ const Home = () => {
 
   const getFavorites = async (data: { email: string }) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/oshi/get-user-oshi-genres`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: data.email }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/oshi/get-user-oshi-genres`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: data.email }),
+        }
+      );
 
       if (response.ok) {
         const responseData = await response.json();
@@ -86,7 +86,7 @@ const Home = () => {
       {loading ? (
         <div
           style={{
-            backgroundColor: "#F6F6F6",
+            backgroundColor: "#F5F5F5",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
@@ -96,7 +96,7 @@ const Home = () => {
         >
           <div className={styles.loadingDonut}></div>{" "}
           {/* モジュールからクラスを使用 */}
-          <p style={{ marginTop: "20px", fontFamily: "JPfont" }}>
+          <p style={{ marginTop: "20px", fontFamily: "JPFont" }}>
             Loading... Please wait...
           </p>
         </div>
@@ -106,9 +106,9 @@ const Home = () => {
 
         <>
           <Header />
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          {/* <div style={{ display: "flex", justifyContent: "center", }}>
             <Toggle />
-          </div>
+          </div> */}
           <Typography
             variant="h6"
             color="inherit"
@@ -117,7 +117,7 @@ const Home = () => {
               display: "flex",
               justifyContent: "flex-end",
               paddingRight: "20px",
-              backgroundColor: "#f6f6f6",
+              backgroundColor: "#F5F5F5",
             }}
           >
             <svg
@@ -130,22 +130,24 @@ const Home = () => {
                 d="M3 10h11v2H3zm0-2h11V6H3zm0 8h7v-2H3zm15.01-3.13l.71-.71a.996.996 0 0 1 1.41 0l.71.71c.39.39.39 1.02 0 1.41l-.71.71zm-.71.71l-5.3 5.3V21h2.12l5.3-5.3z"
               />
             </svg>
-            {/* <span style={{ marginLeft: "2px" }}>編集</span>{" "} */}
-            {/* Optional text beside the icon */}
           </Typography>
           <div
             style={{
-              backgroundColor: "#F6F6F6",
+              backgroundColor: "#F5F5F5",
               height: "calc(100vh - 100px)",
               overflowY: "auto",
               display: "flex",
-              justifyContent: "center",
+              flexDirection: "column",
             }}
           >
             {Object.keys(groupedData).map((tag) => (
               <div
                 key={tag}
-                style={{ fontFamily: "JPFont", margin: "30px 33px" }}
+                style={{
+                  fontFamily: "JPFont",
+                  margin: "30px 33px",
+                  color: "#555",
+                }}
               >
                 <h2 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
                   {tag}
@@ -155,13 +157,21 @@ const Home = () => {
                     key={data.oshi_name}
                     href={`/favoriteNote/${data.oshi_name}`}
                   >
-                    <div
-                      style={{
+                    <div className={styles.oshinoko}>
+                      {/* style={{
                         height: "100px",
                         display: "flex",
+                        justifyContent: "center",
                         alignItems: "center",
+                        paddingLeft: "20px",
+                        backgroundColor: "#FFFFFF",
+                        borderRadius: "10px",
+                        boxShadow: "0px 2px 5px rgba(186, 188, 211, 1)",
+                        cursor: "pointer",
+                        transition: "background-color 0.3s ease",
+                        margin: "10px 10px",
                       }}
-                    >
+                    > */}
                       <div
                         style={{
                           display: "flex",
@@ -238,16 +248,23 @@ const Home = () => {
             >
               +
             </button> */}
-            <Image
+            
+            {/* <Image
+              className={styles.add}
               src={add}
               alt="add"
               style={{
-                width: "90%",
-                height: "120px",
-                alignSelf: "flex-end",
-                marginBottom: "30px",
+                maxHeight: "120px",
+                alignSelf: "center",
+                justifyItems: "flex-end",
               }}
-            />
+              onClick={() => (window.location.href = "./selectFavorite")}
+            /> */}
+
+            <div style={{ display: "flex", justifyContent: "center", }}>
+              <Adds /> 
+            </div>
+
           </div>
         </>
       )}

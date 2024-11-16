@@ -34,7 +34,7 @@ export default function Header() {
         {" "}
         {/* ボックスも高さ100%で合わせる */}
         <Box
-          sx={{ display: "flex", justifyContent: "center" }} /* 縦中央揃え */
+          sx={{ display: "flex", justifyContent: "center", }} /* 縦中央揃え */
         >
           <ToggleButtonGroup
             value={view}
@@ -46,21 +46,21 @@ export default function Header() {
               value="home"
               aria-label="home view"
               sx={{
-                width: "160px",
+                width: "200px",
                 height: "40px",
                 borderRadius: "20px",
                 backgroundColor: "#FCFCFA",
-                "&.Mui-selected": {
-                  backgroundColor: "lightblue", // 選択時の背景色
-                  color: "white", // 選択時のテキスト色
-                },
-                "&.Mui-selected:hover": {
-                  backgroundColor: "#D3DCF9", // 選択時のホバー時の背景色
-                },
-                "&:active": {
-                  backgroundColor: "#FDEFFE", // 押されたときの背景色
-                  color: "#F0F8FE", // 押されたときのテキスト色
-                },
+                // "&.Mui-selected": {
+                //   backgroundColor: "lightblue", // 選択時の背景色
+                //   color: "white", // 選択時のテキスト色
+                // },
+                // "&.Mui-selected:hover": {
+                //   backgroundColor: "#D3DCF9", // 選択時のホバー時の背景色
+                // },
+                // "&:active": {
+                //   backgroundColor: "#FDEFFE", // 押されたときの背景色
+                //   color: "#F0F8FE", // 押されたときのテキスト色
+                // },
               }}
             >
               ホーム
@@ -69,7 +69,7 @@ export default function Header() {
               value="list"
               aria-label="list view"
               sx={{
-                width: "160px",
+                width: "200px",
                 height: "40px",
                 borderRadius: "20px",
                 backgroundColor: "#FCFCFA",
