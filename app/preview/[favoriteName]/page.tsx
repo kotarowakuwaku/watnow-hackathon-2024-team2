@@ -49,7 +49,7 @@ const CustomFormControlLabel = styled(FormControlLabel, { shouldForwardProp: (pr
             left: '-2px',
             borderRadius: 'inherit',
             padding: '2.7px',
-            background: 'conic-gradient(#EAC46A, #D5FCD5, #6C97EC, #0731FB, #7634DB, #FF44AA,#FF6E49,#FF8E03,#EAC463)', // 虹色ボーダー風の背景
+            background: 'conic-gradient(#E0AAFF, #AA95EE, #E3ABF1, #6933C7, #1787EF, #66B2FA,#94CBFF,#E0AAFF)', // 虹色ボーダー風の背景
             opacity: checked ? 1 : 0, // クリック後は透明度を変更して遷移
             transition: 'opacity 0.6s ease', // opacityに対して遷移を適用
             '-webkit-mask':
@@ -360,7 +360,7 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
                 ) : (
                     <>
                         <h2 style={{
-                            fontSize: "1.5rem",
+                            fontSize: "1.5rem",fontFamily:"JPFont"
                         }}>登録したタグから一つ選択しよう！</h2>
                         <FormControl
                             component="fieldset"
