@@ -32,16 +32,19 @@ const styles: { [key: string]: CSSProperties } = {
 
   h1: {
     fontFamily: "JPFont",
-    marginRight: "40%",
-    marginTop: "165px",
+    marginTop: "100px",
     fontSize: "32px",
     fontWeight: "bold",
+    display: "flex",
+    justifyContent: "center",
   },
   h2: {
     marginRight: "0%",
     fontFamily: "JPFont",
     marginTop: "10px",
     fontSize: "24px",
+    justifyContent: "center",
+    display: "flex",
   },
   label: {
     backgroundColor: "#E6E6E6",
@@ -283,7 +286,7 @@ const NewRegistration = () => {
               width: "100%",
             }}
           >
-            <p style={{ fontFamily: "JPFont" }}>ログイン済みの方はこちら</p>
+            <p style={{ fontFamily: "JPFont", marginBottom:"-20px" }}>ログイン済みの方はこちら</p>
             <Btn
               type="button"
               text="ログインへ"
