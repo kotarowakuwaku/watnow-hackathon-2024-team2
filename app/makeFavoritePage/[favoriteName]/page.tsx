@@ -27,7 +27,36 @@ import SnsLinksModal from "@/app/components/SnsLinksModal";
 import { supabase } from "@/app/utils/supabase/supabase";
 import Button from "@/app/components/Button";
 import { CSSProperties } from 'react';
-import { count } from "console";
+
+interface ContentItem {
+    type: 'text' | 'image' | 'event' | 'sns';
+    text?: string;
+    alignment?: string;
+    fontSize?: number;
+    src?: string;
+    size?: number;
+    snsLinks?: { name: string; url: string }[];
+    title?: string;
+    start?: string;
+    end?: string;
+    count?: number;
+    order_index?: number;
+}
+
+interface submitItem {
+    type: 'text' | 'image' | 'event' | 'sns';
+    text?: string;
+    alignment?: string;
+    fontSize?: number;
+    src?: string;
+    size?: number;
+    snsLinks?: { name: string; url: string }[];
+    title?: string;
+    start_date?: string;
+    end_date?: string;
+    count?: number;
+    order_index?: number;
+}
 
 export const buttonStyles: { [key: string]: (isOpen: boolean) => CSSProperties } = {
     button: (isOpen: boolean) => ({
@@ -121,7 +150,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
     const [fontSize, setFontSize] = useState(16);
     const [alignment, setAlignment] = useState<'left' | 'center' | 'right'>('left');
     const [activeModal, setActiveModal] = useState<string | null>(null);
-    const [insertedItems, setInsertedItems] = useState<{ type: string;[key: string]: any }[]>([]);
+    const [insertedItems, setInsertedItems] = useState<ContentItem[]>([]);
     const [uploadedImage, setUploadedImage] = useState<string>('');
     const [imageSize, setImageSize] = useState(100);
     const [events, setEvents] = useState<{ title: string; start: string; end: string }[]>([]); // State for calendar events
@@ -194,14 +223,14 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
         }
     };
 
-    const onSubmit = async (data: { type: string;[key: string]: any }[]) => {
+    const onSubmit = async (data: ContentItem[]) => {
         setIsLoading(true);
-        const newSubmitData: { type: string;[key: string]: any }[] = [];
+        const newSubmitData: submitItem[] = [];
         const imageUrl: { [key: number]: string }[] = [];
 
         for (const item of data) {
             if (item.type === 'image') {
-                const base64Data = item.src.split(',')[1];
+                const base64Data = item.src ? item.src.split(',')[1] : '';
                 const blob = new Blob([Uint8Array.from(atob(base64Data), (c) => c.charCodeAt(0))], {
                     type: 'image/jpeg',
                 });
@@ -228,7 +257,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
                 imageUrl.push({ [data.indexOf(item)]: publicImageUrlData.publicUrl });
             }
         }
-        data.forEach((item: any) => {
+        data.forEach((item: ContentItem) => {
             if (item.type === 'text') {
                 newSubmitData.push({
                     type: item.type,
@@ -240,7 +269,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
             } else if (item.type === 'image') {
                 newSubmitData.push({
                     type: item.type,
-                    src: imageUrl.find((key) => Number(Object.keys(key)[0]) === data.indexOf(item))?.[data.indexOf(item)] || null,
+                    src: imageUrl.find((key) => Number(Object.keys(key)[0]) === data.indexOf(item))?.[data.indexOf(item)] || undefined,
                     size: item.size,
                     order_index: data.indexOf(item),
                 });
@@ -275,7 +304,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
         {
             oshi_name: string;
             email: string;
-            content: { [key: string]: any; type: string; }[];
+            content: ContentItem[];
         }
     ) => {
         try {
@@ -309,7 +338,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
     };
 
     const handleText = () => {
-        const tempTextData = {
+        const tempTextData: ContentItem = {
             type: 'text',
             text: text,
             fontSize: fontSize,
@@ -324,9 +353,9 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
 
     const handleAddSnsLinks = (newSnsLinks: { name: string; url: string | null }[]) => {
         if (newSnsLinks.length !== 0) {
-            const snsData = {
+            const snsData: ContentItem = {
                 type: 'sns',
-                snsLinks: newSnsLinks,
+                snsLinks: newSnsLinks.filter(link => link.url !== null) as { name: string; url: string }[],
             };
             setInsertedItems([...insertedItems, snsData]);
         }
@@ -335,7 +364,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
 
     const handleComplete = () => {
         if (uploadedImage) {
-            const tempImageData = {
+            const tempImageData: ContentItem = {
                 type: 'image',
                 src: uploadedImage,
                 size: imageSize,
@@ -347,7 +376,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
 
 
     const handleAddEvent = (newEvent: { title: string; start: string; end: string }) => {
-        const eventData = {
+        const eventData: ContentItem = {
             type: 'event',
             title: newEvent.title,
             start: newEvent.start,
@@ -369,7 +398,7 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
             {insertedItems.map((item, index) => {
                 if (item.type === 'text') {
                     return (
-                        <div key={index} style={{ textAlign: item.alignment, fontSize: item.fontSize ? `${item.fontSize}px` : undefined }}>
+                        <div key={index} style={{ textAlign: item.alignment as 'left' | 'center' | 'right', fontSize: item.fontSize ? `${item.fontSize}px` : undefined }}>
                             {item.text}
                         </div>
                     );
@@ -406,9 +435,9 @@ const MakeFavoritePage = ({ params }: { params: { favoriteName: string } }) => {
                 } else if (item.type === 'sns') {
                     return (
                         <div key={index} style={styles.snsContainer}>
-                            {item.snsLinks.map((snsLink: { name: string; url: string | null }) => (
+                            {item.snsLinks && item.snsLinks.map((snsLink: { name: string; url: string | null }) => (
                                 <div key={snsLink.name}>
-                                    <a ref={snsLink.url} target="_blank" rel="noopener noreferrer">
+                                    <a href={snsLink.url || undefined} target="_blank" rel="noopener noreferrer">
                                         <Image
                                             src={
                                                 snsLink.name === "youtube" ? "https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" :
