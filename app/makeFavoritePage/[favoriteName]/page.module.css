@@ -1,0 +1,41 @@
+.loadingDonut {
+    width: 80px; /* ドーナツの幅 */
+    height: 80px; /* ドーナツの高さ */
+    border: 8px solid #94aee9; /* 初期色 */
+    border-top: 8px solid transparent; /* 上部分は透明に */
+    border-radius: 50%; /* 円形にする */
+    animation: spin 2s linear infinite, change-color 4s ease-in-out infinite; /* 回転と色変化のアニメーションをカンマで分ける */
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @keyframes change-color {
+    0% {
+      border-color: #94aee9; /* 初期色 */
+      border-top-color: transparent;
+    }
+    25% {
+      border-color: #bca5d9; /* 色変更 */
+      border-top-color: transparent;
+    }
+    50% {
+      border-color: #e5c9f0; /* 色変更 */
+      border-top-color: transparent;
+    }
+    75% {
+      border-color: #b0e0f9; /* 色変更 */
+      border-top-color: transparent;
+    }
+    100% {
+      border-color: #94aee9; /* 元の色に戻る */
+      border-top-color: transparent;
+    }
+  }
+  
