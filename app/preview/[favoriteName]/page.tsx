@@ -80,7 +80,7 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
         official_site_url: "",
         sns_links: {}, // オブジェクト形式
     });
-    const [submitting, setSubmitting] = useState(false);
+    const [, setSubmitting] = useState(false);
     const [isLoading, setIsLoading] = useState(true); // ローディングステート
     const [genles, setGenles] = useState<string[]>([]);
     const [submitted, setSubmitted] = useState(false);

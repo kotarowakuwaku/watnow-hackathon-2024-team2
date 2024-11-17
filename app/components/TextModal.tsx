@@ -3,7 +3,6 @@ import Image from "next/image";
 import left from "../images/leftSort.png"; // 左矢印アイコン
 import center from "../images/centerSort.png"; // 中央矢印アイコン
 import right from "../images/rightSort.png"; // 右矢印アイコン
-import { colors, Hidden } from "@mui/material";
 
 type TextModalProps = {
   text: string;
