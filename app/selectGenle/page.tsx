@@ -143,7 +143,8 @@ export default function SelectGenle() {
           fontFamily: "JPFont",
           fontWeight: "bold",
           color: "#333",
-          margin: "80px 0px 0px 40px",
+          justifySelf: "center",
+          margin: "80px 0px 0px 20px",
         }}
       >
         はじめまして！
@@ -153,7 +154,7 @@ export default function SelectGenle() {
           fontSize: "20px",
           fontFamily: "JPFont",
           color: "#333",
-          margin: "0px 80px 0px 40px",
+          justifySelf: "center",  
         }}
       >
         まずはあなたの好きなものを教えてください
@@ -165,7 +166,7 @@ export default function SelectGenle() {
         }}
       >
         <FormLabel
-          style={{ fontFamily: "JPFont", margin: "0px 0px 10px 40px" }}
+          style={{ fontFamily: "JPFont", margin: "0px 0px 10px 0px",width: "100%",display: "flex", justifyContent: "center",}}
           component="legend"
         >
           推しジャンルを選択してください

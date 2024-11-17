@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { CSSProperties } from 'react';
+import styless from "./page.module.css";
 
 // スタイル付きチェックボックス
 const CustomCheckbox = styled(Checkbox)(() => ({
@@ -48,7 +49,7 @@ const CustomFormControlLabel = styled(FormControlLabel, { shouldForwardProp: (pr
             left: '-2px',
             borderRadius: 'inherit',
             padding: '2.7px',
-            background: 'conic-gradient(#EAC46A, #D5FCD5, #6C97EC, #0731FB, #7634DB, #FF44AA,#FF6E49,#FF8E03,#EAC463)', // 虹色ボーダー風の背景
+            background: 'conic-gradient(#E0AAFF, #AA95EE, #E3ABF1, #6933C7, #1787EF, #66B2FA,#94CBFF,#E0AAFF)', // 虹色ボーダー風の背景
             opacity: checked ? 1 : 0, // クリック後は透明度を変更して遷移
             transition: 'opacity 0.6s ease', // opacityに対して遷移を適用
             '-webkit-mask':
@@ -79,7 +80,7 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
         official_site_url: "",
         sns_links: {}, // オブジェクト形式
     });
-    const [submitting, setSubmitting] = useState(false);
+    const [, setSubmitting] = useState(false);
     const [isLoading, setIsLoading] = useState(true); // ローディングステート
     const [genles, setGenles] = useState<string[]>([]);
     const [submitted, setSubmitted] = useState(false);
@@ -211,7 +212,7 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            maxWidth: '600px',
+            //maxWidth: '600px',
             height: '100vh',
             color: '#4F4F4F',
         },
@@ -290,8 +291,24 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
 
     return (
         <div style={styles.container}>
-            {isLoading || submitting ? (
-                <div style={styles.loading}>Loading...</div>
+            {isLoading ? (
+        <div
+          style={{
+            backgroundColor: "#F5F5F5",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+            width: "100%",
+          }}
+        >
+          <div className={styless.loadingDonut}></div>{" "}
+          {/* モジュールからクラスを使用 */}
+          <p style={{ marginTop: "20px", fontFamily: "JPFont" }}>
+            Loading... Please wait...
+          </p>
+        </div>
             ) : (
                 !submitted ? (
                     <>
@@ -343,7 +360,7 @@ const Preview = ({ params }: { params: { favoriteName: string } }) => {
                 ) : (
                     <>
                         <h2 style={{
-                            fontSize: "1.5rem",
+                            fontSize: "1.5rem",fontFamily:"JPFont"
                         }}>登録したタグから一つ選択しよう！</h2>
                         <FormControl
                             component="fieldset"
